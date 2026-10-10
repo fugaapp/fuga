@@ -1,0 +1,53 @@
+# One-click release, no terminal needed: Actions tab → "Release" → Run workflow.
+# It tags the latest commit on main with the version in package.json
+# (v0.1.0, v0.2.0…) and starts the Build workflow on that tag, which puts the
+# installers in a draft GitHub Release. Then publish the draft.
+#
+# Build is started explicitly because a tag pushed with the workflow token
+# does not trigger other workflows by itself.
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tag:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the tag
+      actions: write # start the Build workflow
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Tag the version in package.json
+        id: tag
+        shell: bash
+        run: |
+          tag="v$(node -p "require('./package.json').version")"
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+            echo "::error::$tag already exists. Bump the version in package.json first."
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git tag -a "$tag" -m "Fuga ${tag#v}"
+          git push origin "$tag"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Build the installers
+        shell: bash
+        run: gh workflow run build.yml --ref "${{ steps.tag.outputs.tag }}"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Summary
+        shell: bash
+        run: |
+          echo "Tagged **${{ steps.tag.outputs.tag }}**. The *Build* workflow is now making the installers (≈10 min)." >> "$GITHUB_STEP_SUMMARY"
+          echo "When it's done, open *Releases*, edit the draft and click **Publish release**." >> "$GITHUB_STEP_SUMMARY"
