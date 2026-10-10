@@ -1,40 +1,40 @@
 # Roadmap
 
-Ordenado pelo que mais melhora a precisão e a confiança no resultado.
+Ordered by how much each item improves precision and trust in the result.
 
-## Próximo
+## Next
 
-- [ ] **Incerteza visível.** Simular ruído de clique (Monte Carlo sobre as
-      linhas atuais) e mostrar a focal como `31.2 ± 0.4 mm`. Diz ao
-      utilizador *quando* deve acrescentar linhas.
-- [ ] **EXIF.** Ler a focal equivalente a 35 mm da foto e usá-la como
-      verificação ("o solver diz 28 mm, o EXIF diz 26 mm") e como valor
-      inicial no modo 1 VP. Base de dados de sensores por modelo de câmara.
-- [ ] **Encaixe nas arestas.** Ao largar uma ponta, ajustá-la à aresta mais
-      forte da imagem por perto (gradiente sub-pixel). Pedido do fSpy #157.
-- [ ] **Deteção automática de linhas** (LSD) para sugerir grupos de linhas.
-- [ ] **Avisar ao fechar** com alterações por guardar; *relink* da foto
-      quando o caminho mudou.
+- [ ] **Visible uncertainty.** Simulate click noise (Monte Carlo over the
+      current lines) and show the focal length as `31.2 ± 0.4 mm`. Tells the
+      user *when* to add more lines.
+- [ ] **EXIF.** Read the photo's 35 mm-equivalent focal length and use it as
+      a cross-check ("solver says 28 mm, EXIF says 26 mm") and as the
+      starting value in 1-VP mode. Sensor database by camera model.
+- [ ] **Edge snapping.** When an endpoint is released, snap it to the
+      strongest nearby image edge (sub-pixel gradient). fSpy request #157.
+- [ ] **Automatic line detection** (LSD) to suggest line groups.
+- [ ] **Warn on close** with unsaved changes; **relink** the photo when its
+      path changed.
 
-## Depois
+## Later
 
-- [ ] **Distorção de lente.** Modelo Brown–Conrady (k1, k2) estimado a partir
-      de linhas que deviam ser retas ("plumb-line"). O fSpy não suporta lentes
-      com distorção forte.
-- [ ] Exportadores nativos: Nuke (`.nk`), After Effects (`.jsx`),
-      Cinema 4D, Houdini (`.hip` via Python), FBX.
-- [ ] Guias extra: cilindro com eixo escolhível, mais do que um guia, guias
-      escaláveis (fSpy #154).
-- [ ] Várias fotos com a mesma câmara / mesmo espaço.
-- [ ] Panorâmicas 360° (fSpy #139).
-- [ ] Interface em português (as strings estão concentradas nos painéis).
+- [ ] **Lens distortion.** Brown–Conrady model (k1, k2) estimated from lines
+      that should be straight ("plumb-line"). fSpy does not handle strongly
+      distorting lenses.
+- [ ] Native exporters: Nuke (`.nk`), After Effects (`.jsx`), Cinema 4D,
+      Houdini (`.hip` via Python), FBX.
+- [ ] Extra guides: cylinder with a selectable axis, more than one guide,
+      scalable guides (fSpy #154).
+- [ ] Several photos sharing one camera / one space.
+- [ ] 360° panoramas (fSpy #139).
+- [ ] UI translations (strings are concentrated in the panels).
 
-## Por validar em aplicações reais
+## To validate in real applications
 
-Os exports estão testados contra os modelos de câmara documentados e o USD
-contra a biblioteca da Pixar, mas falta abrir em cada aplicação:
+Exports are tested against the documented camera models and the USD output
+against Pixar's library, but each still needs opening in its application:
 
-- [ ] Blender 5.1: correr o script exportado com `samples/synthetic-box.fuga`.
-- [ ] Maya: confirmar que o `imagePlane` acompanha o *film offset* quando o
-      ponto principal não está no centro (modo 3 VP ou manual).
-- [ ] Houdini / C4D / Unreal: importar o `.usda`.
+- [ ] Blender 5.1: run the exported script for `samples/synthetic-box.fuga`.
+- [ ] Maya: confirm the `imagePlane` follows the film offset when the
+      principal point is off-center (3-VP or manual mode).
+- [ ] Houdini / C4D / Unreal: import the `.usda`.
