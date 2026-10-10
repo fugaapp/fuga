@@ -1,0 +1,45 @@
+{
+  "name": "fuga",
+  "productName": "Fuga",
+  "version": "0.1.0",
+  "description": "Camera calibration from a single photo — vanishing points to Blender, Maya, USD.",
+  "private": true,
+  "type": "module",
+  "main": "out/main/index.js",
+  "license": "UNLICENSED",
+  "author": "Gelain",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "npm run typecheck && electron-vite build",
+    "preview": "electron-vite preview",
+    "typecheck": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.web.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "sample": "python3 scripts/make_sample.py",
+    "dist": "npm run build && electron-builder"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/ibm-plex-sans-condensed": "5.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "@vitejs/plugin-react": "5.2.0",
+    "electron": "44.4.2",
+    "electron-builder": "26.15.7",
+    "electron-vite": "5.0.0",
+    "typescript": "5.9.3",
+    "vite": "7.3.6",
+    "vitest": "4.1.11"
+  },
+  "overrides": {
+    "vite": "$vite"
+  }
+}

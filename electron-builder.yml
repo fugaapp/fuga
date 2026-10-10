@@ -1,0 +1,26 @@
+appId: app.fuga.calibrate
+productName: Fuga
+directories:
+  output: release
+files:
+  - out/**
+  - package.json
+asar: true
+fileAssociations:
+  - ext: fuga
+    name: Fuga project
+    role: Editor
+mac:
+  category: public.app-category.graphics-design
+  target: dmg
+win:
+  target: nsis
+nsis:
+  oneClick: false
+  # fSpy issue #150: let the user choose a per-machine install.
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+linux:
+  target: [AppImage, deb]
+  category: Graphics
