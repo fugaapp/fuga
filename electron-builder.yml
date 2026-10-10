@@ -1,7 +1,9 @@
 appId: app.fuga.calibrate
 productName: Fuga
+artifactName: Fuga-${version}-${os}-${arch}.${ext}
 directories:
   output: release
+  buildResources: build
 files:
   - out/**
   - package.json
@@ -10,17 +12,41 @@ fileAssociations:
   - ext: fuga
     name: Fuga project
     role: Editor
+
+# Installers are attached to a *draft* GitHub release; publishing the draft is
+# what makes the in-app update notice appear. Keep in sync with src/shared/release.ts.
+publish:
+  provider: github
+  owner: gln11
+  repo: gln
+  releaseType: draft
+
 mac:
   category: public.app-category.graphics-design
-  target: dmg
+  target:
+    - target: dmg
+      arch: [arm64, x64]
+  # Free ad-hoc signature: required for Apple Silicon to launch the app at all.
+  # Without a paid Apple Developer ID, users open it the first time with
+  # right-click → Open (see docs/RELEASING.md).
+  identity: '-'
+  hardenedRuntime: false
+
 win:
-  target: nsis
+  target:
+    - target: nsis
+      arch: [x64]
+
 nsis:
   oneClick: false
   # fSpy issue #150: let the user choose a per-machine install.
   perMachine: false
   allowElevation: true
   allowToChangeInstallationDirectory: true
+
 linux:
-  target: [AppImage, deb]
+  target:
+    - target: AppImage
+      arch: [x64]
   category: Graphics
+  syncDesktopName: true

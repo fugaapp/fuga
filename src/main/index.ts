@@ -2,6 +2,13 @@ import { app, BrowserWindow, dialog, ipcMain, Menu, shell, type MenuItemConstruc
 import { readFile, writeFile } from 'node:fs/promises';
 import { basename, extname, join } from 'node:path';
 import { Channels, IMAGE_EXTENSIONS, type MenuCommand, type OpenedImage } from '../shared/ipc';
+import { GITHUB_REPO } from '../shared/release';
+import { checkForUpdate } from './updates';
+
+/** Only ever hand https links to the OS — never file:// or custom schemes. */
+function openHttps(url: string): void {
+  if (/^https:\/\//i.test(url)) void shell.openExternal(url);
+}
 
 const MIME: Record<string, string> = {
   png: 'image/png',
@@ -34,7 +41,7 @@ function createWindow(): void {
   window.once('ready-to-show', () => window?.show());
   // Never navigate away from the app; open external links in the browser.
   window.webContents.setWindowOpenHandler(({ url }) => {
-    void shell.openExternal(url);
+    openHttps(url);
     return { action: 'deny' };
   });
   window.webContents.on('will-navigate', (e) => e.preventDefault());
@@ -60,6 +67,12 @@ function registerIpc(): void {
       filters: [{ name: 'Images', extensions: [...IMAGE_EXTENSIONS] }],
     });
     return r.canceled ? null : readImage(r.filePaths[0]);
+  });
+
+  ipcMain.handle(Channels.checkUpdate, () => checkForUpdate());
+  ipcMain.on(Channels.openExternal, (_, url: string) => openHttps(url));
+  ipcMain.on(Channels.version, (e) => {
+    e.returnValue = app.getVersion();
   });
 
   ipcMain.handle(Channels.readImage, (_, path: string) => readImage(path));
@@ -136,6 +149,14 @@ function buildMenu(): void {
         { type: 'separator' },
         { role: 'togglefullscreen' },
         ...(app.isPackaged ? [] : [{ role: 'toggleDevTools' as const }]),
+      ],
+    },
+    {
+      label: 'Help',
+      submenu: [
+        { label: 'Check for Updates…', click: send('check-updates') },
+        { label: 'Release Notes', click: () => openHttps(`https://github.com/${GITHUB_REPO}/releases`) },
+        { label: 'Report a Problem', click: () => openHttps(`https://github.com/${GITHUB_REPO}/issues`) },
       ],
     },
   ];

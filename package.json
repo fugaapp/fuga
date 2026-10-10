@@ -3,6 +3,7 @@
   "productName": "Fuga",
   "version": "0.1.0",
   "description": "Camera calibration from a single photo — vanishing points to Blender, Maya, USD.",
+  "desktopName": "fuga.desktop",
   "private": true,
   "type": "module",
   "main": "out/main/index.js",
@@ -19,7 +20,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "sample": "python3 scripts/make_sample.py",
-    "dist": "npm run build && electron-builder"
+    "dist": "npm run build && electron-builder --publish never"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "5.3.0",

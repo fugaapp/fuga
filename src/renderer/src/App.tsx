@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createProject, EXPORT_TARGETS, parseProject, solveCamera, toSolverInput, type Project, type Vec2 } from '../../core';
 import type { MenuCommand, OpenedImage } from '../../shared/ipc';
+import type { UpdateInfo } from '../../shared/release';
 import { EmptyState } from './EmptyState';
 import { Inspector } from './panels/Inspector';
 import { removeLine, type Handle } from './state/edits';
@@ -40,6 +41,7 @@ export function App() {
   const [cursor, setCursor] = useState<Vec2 | null>(null);
   const [zoom, setZoom] = useState(1);
   const [notice, setNotice] = useState<string | null>(null);
+  const [update, setUpdate] = useState<UpdateInfo | null>(null);
   const viewport = useRef<ViewportApi>(null);
 
   const result = useMemo(() => {
@@ -122,6 +124,22 @@ export function App() {
     if (path) flash(`Exported ${path}`);
   }), [run, result, project]);
 
+  const checkUpdates = useCallback(
+    (manual: boolean) =>
+      run(async () => {
+        const found = await api.checkForUpdate();
+        setUpdate(found);
+        if (manual && !found) flash(`Fuga ${api.version} is the latest version.`);
+      }),
+    [run, flash],
+  );
+
+  // Check once shortly after launch; quietly does nothing when offline.
+  useEffect(() => {
+    const t = window.setTimeout(() => checkUpdates(false), 3000);
+    return () => window.clearTimeout(t);
+  }, [checkUpdates]);
+
   // Menu commands from the main process. A ref keeps the subscription stable.
   const commands = useRef<Record<MenuCommand, () => void>>(null!);
   commands.current = {
@@ -133,6 +151,7 @@ export function App() {
     redo: () => history.redo(),
     'zoom-fit': () => viewport.current?.fit(),
     'zoom-100': () => viewport.current?.actualPixels(),
+    'check-updates': () => checkUpdates(true),
   };
   useEffect(() => api.onMenu((cmd) => commands.current[cmd]()), []);
 
@@ -189,6 +208,11 @@ export function App() {
           {title}
         </span>
         <span className="spacer" />
+        {update && (
+          <button type="button" className="update-pill" onClick={() => api.openExternal(update.url)} title="Open the release page to download">
+            Fuga {update.version} available
+          </button>
+        )}
         <button type="button" className="btn ghost" disabled={!history.canUndo} onClick={() => history.undo()} title="Undo">
           Undo
         </button>
@@ -244,6 +268,9 @@ export function App() {
         </span>
         {notice && <span style={{ color: 'var(--text)' }}>{notice}</span>}
         <span className="state" style={{ color: stateColor }}>
+          <span className="num" style={{ color: 'var(--text-faint)', fontSize: 'var(--text-xs)', marginRight: 10 }}>
+            v{api.version}
+          </span>
           <span className="dot" />
           <span>{stateText}</span>
         </span>
