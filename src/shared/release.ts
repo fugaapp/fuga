@@ -1,5 +1,5 @@
 /** Where releases are published. Keep in sync with `publish` in electron-builder.yml. */
-export const GITHUB_REPO = 'gln11/gln';
+export const GITHUB_REPO = 'fuga-app/fuga';
 
 export interface UpdateInfo {
   readonly version: string;
