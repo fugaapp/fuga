@@ -32,7 +32,7 @@ fileAssociations:
 # what makes the in-app update notice appear. Keep in sync with src/shared/release.ts.
 publish:
   provider: github
-  owner: fuga-app
+  owner: fugaapp
   repo: fuga
   releaseType: draft
 

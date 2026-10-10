@@ -4,7 +4,7 @@
 
 Please **do not open a public issue** for a security problem. Report it
 privately through GitHub: *Security* tab → *Report a vulnerability*
-([direct link](https://github.com/fuga-app/fuga/security/advisories/new)).
+([direct link](https://github.com/fugaapp/fuga/security/advisories/new)).
 You will get a reply as soon as possible; fixes ship as a new release and
 the app tells every user about it.
 
