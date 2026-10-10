@@ -14,6 +14,8 @@ to fix the most common complaints of its users — see
 
 > The name comes from *ponto de fuga*, Portuguese for vanishing point.
 
+**New here?** Read the illustrated [User Guide (PDF)](docs/guide/Fuga-User-Guide.pdf).
+
 ## Download
 
 Installers for Windows, macOS and Linux are on the
@@ -34,6 +36,7 @@ npm run dist       # build an installer for your OS (into release/)
 ```
 
 Publishing a new version: [docs/RELEASING.md](docs/RELEASING.md).
+Rebuilding the user guide after editing `docs/guide/guide.html`: `npm run guide`.
 
 To try it without a photo of your own: `npm run sample` renders
 `samples/synthetic-box.png` (a box photographed by a **known** camera) and
