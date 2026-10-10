@@ -1,4 +1,7 @@
-# Fuga
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="brand/logo/fuga-lockup-dark.svg">
+  <img src="brand/logo/fuga-lockup-light.svg" alt="Fuga" height="56">
+</picture>
 
 Camera calibration from a single photo, using vanishing points. You trace
 parallel edges in the photo; Fuga solves the focal length, rotation and
@@ -86,8 +89,9 @@ src/
     src/panels/    side panel
     src/state/     document + undo history
 tests/         Core tests against synthetic cameras (ground truth)
-scripts/       Sample image and app icon generators
-build/         App icon (used by the installers)
+scripts/       Sample image and brand asset generators
+brand/         Visual identity: logos, fonts, brand guide
+build/         App icon (generated; used by the installers)
 docs/          Decisions, architecture, roadmap
 ```
 

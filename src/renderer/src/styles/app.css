@@ -61,20 +61,12 @@ select {
 }
 
 .wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   font: 500 11px var(--font-num);
-  letter-spacing: 0.32em;
+  letter-spacing: 0.3em;
   color: var(--text);
-}
-
-.wordmark::before {
-  /* the mark: a vanishing point */
-  content: '';
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  margin-right: 8px;
-  border: 1px solid var(--signal);
-  transform: rotate(45deg) translateY(-1px);
 }
 
 .doc-title {
