@@ -123,3 +123,20 @@ describe('euler readout', () => {
     expect(cy * cx).toBeCloseTo(p.z[2], 12);
   });
 });
+
+describe('code injection through names and paths', () => {
+  const cam = cameras[0][1];
+  const evil = 'x"\nimport os; os.system("rm -rf ~")\n#';
+  it.each(['blender', 'maya'])('%s: a hostile name stays inside one string literal', (id) => {
+    const py = target(id).write(cam, { ...opts, name: evil, imagePath: evil });
+    // No line of the script may start with the injected statement.
+    expect(py.split('\n').some((l) => l.trimStart().startsWith('import os; os.system'))).toBe(false);
+    // The literal round-trips through JSON (a subset of Python's string syntax for this alphabet).
+    const literal = py.match(/^NAME = (.*)$/m)![1];
+    expect(JSON.parse(literal)).toBe(evil);
+  });
+  it('usd: a hostile name cannot break out of the prim declaration', () => {
+    const usda = target('usd').write(cam, { ...opts, name: evil });
+    expect(usda).toMatch(/^def Camera "[A-Za-z0-9_]+"$/m);
+  });
+});

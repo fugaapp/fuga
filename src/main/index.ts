@@ -1,14 +1,11 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu, nativeTheme, shell, type MenuItemConstructorOptions } from 'electron';
-import { readFile, writeFile } from 'node:fs/promises';
-import { basename, extname, join } from 'node:path';
+import { app, BrowserWindow, dialog, ipcMain, Menu, nativeTheme, type MenuItemConstructorOptions } from 'electron';
+import { readFile, stat, writeFile } from 'node:fs/promises';
+import { basename, dirname, extname, isAbsolute, join, parse, relative, resolve, sep } from 'node:path';
 import { Channels, IMAGE_EXTENSIONS, type MenuCommand, type OpenedImage } from '../shared/ipc';
 import { GITHUB_REPO } from '../shared/release';
+import { loadPreferences, savePreferences } from './preferences';
+import { hardenBeforeReady, hardenSession, openHttps, trustedSender } from './security';
 import { checkForUpdate } from './updates';
-
-/** Only ever hand https links to the OS — never file:// or custom schemes. */
-function openHttps(url: string): void {
-  if (/^https:\/\//i.test(url)) void shell.openExternal(url);
-}
 
 const MIME: Record<string, string> = {
   png: 'image/png',
@@ -19,8 +16,18 @@ const MIME: Record<string, string> = {
   bmp: 'image/bmp',
   gif: 'image/gif',
 };
+const MAX_IMAGE_BYTES = 512 * 1024 * 1024;
+const MAX_TEXT_BYTES = 16 * 1024 * 1024;
 
 let window: BrowserWindow | null = null;
+const preferences = loadPreferences();
+
+/**
+ * Files the UI may write to without asking: only ones the user picked in a
+ * native Open/Save dialog. A compromised renderer therefore cannot overwrite
+ * arbitrary files — every new location goes through a dialog the user sees.
+ */
+const writable = new Set<string>();
 
 function createWindow(): void {
   window = new BrowserWindow({
@@ -29,38 +36,68 @@ function createWindow(): void {
     minWidth: 960,
     minHeight: 600,
     show: false,
-    backgroundColor: '#121212',
+    backgroundColor: nativeTheme.shouldUseDarkColors ? '#171716' : '#f4f2ed',
     title: 'Fuga',
     webPreferences: {
       preload: join(import.meta.dirname, '../preload/index.cjs'),
       sandbox: true,
       contextIsolation: true,
       nodeIntegration: false,
+      webSecurity: true,
+      // Chromium's spellchecker downloads dictionaries from Google; we have no free text to check.
+      spellcheck: false,
+      devTools: !app.isPackaged,
     },
   });
   window.once('ready-to-show', () => window?.show());
-  // Never navigate away from the app; open external links in the browser.
-  window.webContents.setWindowOpenHandler(({ url }) => {
-    openHttps(url);
-    return { action: 'deny' };
-  });
-  window.webContents.on('will-navigate', (e) => e.preventDefault());
-
   if (process.env.ELECTRON_RENDERER_URL) void window.loadURL(process.env.ELECTRON_RENDERER_URL);
   else void window.loadFile(join(import.meta.dirname, '../renderer/index.html'));
 }
 
-async function readImage(path: string): Promise<OpenedImage> {
+const isString = (v: unknown, max = 4096): v is string => typeof v === 'string' && v.length > 0 && v.length <= max;
+
+async function readImage(path: unknown): Promise<OpenedImage> {
+  if (!isString(path) || !isAbsolute(path)) throw new Error('Invalid image path.');
   const ext = extname(path).slice(1).toLowerCase();
   if (!(IMAGE_EXTENSIONS as readonly string[]).includes(ext)) throw new Error(`Unsupported image type: .${ext}`);
+  const info = await stat(path);
+  if (!info.isFile()) throw new Error('Not a file.');
+  if (info.size > MAX_IMAGE_BYTES) throw new Error('Image is larger than 512 MB.');
   const buffer = await readFile(path);
   // Copy into a standalone ArrayBuffer: Node buffers can be views into a shared pool.
   const bytes = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength) as ArrayBuffer;
   return { path, bytes, mime: MIME[ext] };
 }
 
+/**
+ * Store the photo path relative to the project file when both live on the
+ * same drive: the project keeps working when the folder moves, and a shared
+ * .fuga file does not reveal your user name or folder layout.
+ */
+function portableProject(text: string, target: string): string {
+  try {
+    const doc = JSON.parse(text) as { image?: { path?: unknown } };
+    const p = doc.image?.path;
+    if (typeof p === 'string' && isAbsolute(p) && parse(p).root === parse(target).root) {
+      doc.image!.path = relative(dirname(target), p).split(sep).join('/');
+      return JSON.stringify(doc, null, 2) + '\n';
+    }
+  } catch {
+    // Not JSON we understand: save as given.
+  }
+  return text;
+}
+
+/** Register an IPC handler that ignores messages not coming from our own UI. */
+function handle(channel: string, fn: (...args: unknown[]) => unknown): void {
+  ipcMain.handle(channel, (e, ...args) => {
+    if (!trustedSender(e)) throw new Error('Untrusted sender.');
+    return fn(...args);
+  });
+}
+
 function registerIpc(): void {
-  ipcMain.handle(Channels.openImage, async () => {
+  handle(Channels.openImage, async () => {
     const r = await dialog.showOpenDialog(window!, {
       title: 'Open photo',
       properties: ['openFile'],
@@ -69,29 +106,24 @@ function registerIpc(): void {
     return r.canceled ? null : readImage(r.filePaths[0]);
   });
 
-  ipcMain.handle(Channels.checkUpdate, () => checkForUpdate());
-  ipcMain.on(Channels.openExternal, (_, url: string) => openHttps(url));
-  ipcMain.on(Channels.setTheme, (_, theme: unknown) => {
-    if (theme === 'system' || theme === 'dark' || theme === 'light') nativeTheme.themeSource = theme;
-  });
-  ipcMain.on(Channels.version, (e) => {
-    e.returnValue = app.getVersion();
-  });
+  handle(Channels.readImage, (path) => readImage(path));
 
-  ipcMain.handle(Channels.readImage, (_, path: string) => readImage(path));
-
-  ipcMain.handle(Channels.openProject, async () => {
+  handle(Channels.openProject, async () => {
     const r = await dialog.showOpenDialog(window!, {
       title: 'Open project',
       properties: ['openFile'],
       filters: [{ name: 'Fuga project', extensions: ['fuga'] }],
     });
     if (r.canceled) return null;
-    return { path: r.filePaths[0], text: await readFile(r.filePaths[0], 'utf8') };
+    const path = r.filePaths[0];
+    if ((await stat(path)).size > MAX_TEXT_BYTES) throw new Error('Project file is too large.');
+    writable.add(resolve(path));
+    return { path, text: await readFile(path, 'utf8') };
   });
 
-  ipcMain.handle(Channels.saveProject, async (_, text: string, path: string | null) => {
-    let target = path;
+  handle(Channels.saveProject, async (text, path) => {
+    if (!isString(text, MAX_TEXT_BYTES)) throw new Error('Invalid project data.');
+    let target = isString(path) && writable.has(resolve(path)) ? resolve(path) : null;
     if (!target) {
       const r = await dialog.showSaveDialog(window!, {
         title: 'Save project',
@@ -99,23 +131,37 @@ function registerIpc(): void {
         filters: [{ name: 'Fuga project', extensions: ['fuga'] }],
       });
       if (r.canceled || !r.filePath) return null;
-      target = r.filePath;
+      target = resolve(r.filePath);
+      writable.add(target);
     }
-    await writeFile(target, text, 'utf8');
+    await writeFile(target, portableProject(text, target), 'utf8');
     window?.setRepresentedFilename(target);
     window?.setTitle(`${basename(target)} — Fuga`);
     return target;
   });
 
-  ipcMain.handle(Channels.exportFile, async (_, content: string, defaultName: string, extension: string) => {
+  handle(Channels.exportFile, async (content, defaultName, extension) => {
+    if (!isString(content, MAX_TEXT_BYTES) || !isString(defaultName, 200) || !isString(extension, 10) || !/^[a-z]+$/.test(extension)) {
+      throw new Error('Invalid export request.');
+    }
     const r = await dialog.showSaveDialog(window!, {
       title: 'Export camera',
-      defaultPath: `${defaultName}.${extension}`,
+      defaultPath: `${defaultName.replace(/[\\/:*?"<>|]/g, '_')}.${extension}`,
       filters: [{ name: extension.toUpperCase(), extensions: [extension] }],
     });
     if (r.canceled || !r.filePath) return null;
     await writeFile(r.filePath, content, 'utf8');
     return r.filePath;
+  });
+
+  handle(Channels.checkUpdate, (auto) => (auto === true && !preferences.autoUpdateCheck ? null : checkForUpdate()));
+
+  ipcMain.on(Channels.openExternal, (e, url) => trustedSender(e) && openHttps(url));
+  ipcMain.on(Channels.setTheme, (e, theme: unknown) => {
+    if (trustedSender(e) && (theme === 'system' || theme === 'dark' || theme === 'light')) nativeTheme.themeSource = theme;
+  });
+  ipcMain.on(Channels.version, (e) => {
+    e.returnValue = trustedSender(e) ? app.getVersion() : '';
   });
 }
 
@@ -160,7 +206,18 @@ function buildMenu(): void {
       label: 'Help',
       submenu: [
         { label: 'Check for Updates…', click: send('check-updates') },
+        {
+          label: 'Check for Updates Automatically',
+          type: 'checkbox',
+          checked: preferences.autoUpdateCheck,
+          click: (item) => {
+            preferences.autoUpdateCheck = item.checked;
+            savePreferences(preferences);
+          },
+        },
+        { type: 'separator' },
         { label: 'Release Notes', click: () => openHttps(`https://github.com/${GITHUB_REPO}/releases`) },
+        { label: 'Privacy', click: () => openHttps(`https://github.com/${GITHUB_REPO}/blob/HEAD/PRIVACY.md`) },
         { label: 'Report a Problem', click: () => openHttps(`https://github.com/${GITHUB_REPO}/issues`) },
       ],
     },
@@ -168,7 +225,10 @@ function buildMenu(): void {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
+hardenBeforeReady();
+
 app.whenReady().then(() => {
+  hardenSession();
   registerIpc();
   buildMenu();
   createWindow();

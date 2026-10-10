@@ -7,3 +7,8 @@ release/
 coverage/
 *.tsbuildinfo
 __pycache__/
+.env
+.env.*
+*.pem
+*.p12
+*.pfx

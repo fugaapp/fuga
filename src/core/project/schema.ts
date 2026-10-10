@@ -72,6 +72,49 @@ export function toSolverInput(p: Project): SolverInput | null {
   };
 }
 
+const SIGNED_AXES = new Set(['+x', '-x', '+y', '-y', '+z', '-z']);
+const MAX_LINES_PER_GROUP = 500;
+
+const isNum = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
+const isPoint = (v: unknown): v is Vec2 => Array.isArray(v) && v.length === 2 && isNum(v[0]) && isNum(v[1]);
+
+/**
+ * Check every field of an untrusted project, so a damaged or hostile file
+ * can only produce an error message — never NaN geometry, a frozen UI or a
+ * crash. Returns the first problem found, or null.
+ */
+function problem(d: Record<string, unknown>): string | null {
+  const img = d.image as Record<string, unknown> | null;
+  if (img !== null) {
+    if (typeof img !== 'object') return 'image';
+    if (img.path !== null && typeof img.path !== 'string') return 'image.path';
+    for (const k of ['width', 'height'] as const) {
+      const v = img[k];
+      if (!Number.isInteger(v) || (v as number) < 1 || (v as number) > 100_000) return `image.${k}`;
+    }
+  }
+  if (d.mode !== '1vp' && d.mode !== '2vp' && d.mode !== '3vp') return 'mode';
+  const groups = d.groups as unknown[];
+  for (let g = 0; g < 3; g++) {
+    const group = groups[g] as Record<string, unknown> | undefined;
+    if (!group || !SIGNED_AXES.has(group.axis as string)) return `groups[${g}].axis`;
+    const lines = group.lines;
+    if (!Array.isArray(lines) || lines.length > MAX_LINES_PER_GROUP) return `groups[${g}].lines`;
+    for (const l of lines as Record<string, unknown>[]) {
+      if (!l || !isPoint(l.a) || !isPoint(l.b)) return `groups[${g}].lines`;
+    }
+  }
+  const pp = d.principalPoint as Record<string, unknown> | undefined;
+  if (!pp || typeof pp.auto !== 'boolean' || !isPoint(pp.point)) return 'principalPoint';
+  const lens = d.lens as Record<string, unknown> | undefined;
+  if (!lens || !isNum(lens.sensorWidthMm) || lens.sensorWidthMm <= 0 || !isNum(lens.focalMm) || lens.focalMm <= 0) return 'lens';
+  if (!isPoint(d.origin)) return 'origin';
+  const ref = d.reference as Record<string, unknown> | undefined;
+  if (!ref || typeof ref.enabled !== 'boolean' || !['x', 'y', 'z'].includes(ref.axis as string)) return 'reference';
+  if (!isNum(ref.distance) || ref.distance <= 0 || !isPoint(ref.point)) return 'reference';
+  return null;
+}
+
 /** Parse a saved file. Throws with a human-readable message on anything unexpected. */
 export function parseProject(text: string): Project {
   let data: unknown;
@@ -85,5 +128,24 @@ export function parseProject(text: string): Project {
   if (d.version !== 1) throw new Error(`Unsupported project version ${String(d.version)}. Update Fuga.`);
   if (!Array.isArray(d.groups) || d.groups.length !== 3) throw new Error('Project has a malformed line list.');
   // Future versions migrate here, one step at a time (v1 → v2 → …).
-  return { ...createProject(d.image ?? null), ...d } as Project;
+  const bad = problem(d as unknown as Record<string, unknown>);
+  if (bad) throw new Error(`This project file is damaged (${bad}).`);
+  const p = d as Project;
+  // Rebuild from known fields only: unknown keys in the file are dropped.
+  return {
+    format: 'fuga-project',
+    version: 1,
+    image: p.image ? { path: p.image.path, width: p.image.width, height: p.image.height } : null,
+    mode: p.mode,
+    groups: p.groups.map((g) => ({ axis: g.axis, lines: g.lines.map((l) => ({ a: [l.a[0], l.a[1]], b: [l.b[0], l.b[1]] })) })) as unknown as Project['groups'],
+    principalPoint: { auto: p.principalPoint.auto, point: [p.principalPoint.point[0], p.principalPoint.point[1]] },
+    lens: { sensorWidthMm: p.lens.sensorWidthMm, focalMm: p.lens.focalMm },
+    origin: [p.origin[0], p.origin[1]],
+    reference: {
+      enabled: p.reference.enabled,
+      axis: p.reference.axis,
+      distance: p.reference.distance,
+      point: [p.reference.point[0], p.reference.point[1]],
+    },
+  };
 }
