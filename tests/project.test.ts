@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { createProject, parseProject } from '../src/core';
 
-const sample = readFileSync(new URL('../samples/synthetic-box.fuga', import.meta.url), 'utf8');
+const sample = readFileSync(new URL('./fixtures/synthetic-box.fuga', import.meta.url), 'utf8');
 const valid = () => JSON.parse(sample);
 
 describe('parseProject', () => {

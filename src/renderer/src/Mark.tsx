@@ -1,4 +1,4 @@
-// The Fuga mark, drawn from the same geometry as brand/logo (scripts/brand.py).
+// The Fuga mark.
 // Edges take the current text colour; the point takes the signal colour.
 
 const EDGES: [number, number, number, number][] = [

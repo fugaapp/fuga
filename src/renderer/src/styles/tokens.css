@@ -1,5 +1,5 @@
 /*
- * Fuga — design tokens. Values come from the brand guide (brand/guide.html).
+ * Fuga — design tokens.
  *
  * Two themes share every token name; [data-theme] on <html> picks one.
  * Text roles: --text and --text-dim are for words (≥ 4.5:1 on their ground);

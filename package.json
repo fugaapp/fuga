@@ -39,9 +39,7 @@
     "typecheck": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.web.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "sample": "python3 scripts/make_sample.py",
     "dist": "npm run build && electron-builder --publish never",
-    "guide": "electron scripts/guide-pdf.cjs",
     "site": "node scripts/build-site.mjs"
   },
   "dependencies": {
