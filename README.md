@@ -16,7 +16,7 @@ Inspired by [fSpy](https://github.com/stuffmatic/fSpy), written from scratch
 to fix the most common complaints of its users — see
 [docs/DECISIONS.md](docs/DECISIONS.md).
 
-Made by Gelain with AI assistance (Claude) — [how it was made](#how-fuga-was-made).
+Made by Gelain with AI assistance — [how it was made](#how-fuga-was-made).
 
 > The name comes from *ponto de fuga*, Portuguese for vanishing point.
 
@@ -133,8 +133,7 @@ More in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). What comes next is in
 Fuga was designed and directed by Gelain, a motion designer and 3D
 generalist, to find the exact camera behind a photo (its lens, angle and
 position) and bring it into 3D software, so the scene lines up with the
-picture without trial and error. It was written with the help of AI (Claude,
-by Anthropic). Every result is checked by automated tests against cameras
+picture without trial and error. It was built with the help of AI. Every result is checked by automated tests against cameras
 with known values, and the source is public for anyone to review. If you find
 something wrong, [please report it](https://github.com/fugaapp/fuga/issues).
 
