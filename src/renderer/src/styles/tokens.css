@@ -1,0 +1,45 @@
+/*
+ * Fuga — design tokens.
+ *
+ * Direction: a surveyor's instrument, not a web dashboard. The photo is the
+ * only thing with colour; chrome is warm graphite with 1px hairlines,
+ * numbers are monospaced and right-aligned like a readout, and one signal
+ * colour (survey-tape yellow) marks whatever is under your hand. Axis
+ * colours follow the X/Y/Z = red/green/blue habit every 3D artist already has.
+ */
+:root {
+  color-scheme: dark;
+
+  --bg-viewport: #0e0e0d;
+  --bg-chrome: #171716;
+  --bg-raised: #1f1e1c;
+  --bg-input: #121211;
+  --hairline: #2d2b28;
+  --hairline-strong: #3d3a36;
+
+  --text: #e9e5dc;
+  --text-dim: #9a958b;
+  --text-faint: #5f5b54;
+
+  --signal: #f5c518;
+  --signal-ink: #1a1500;
+  --ok: #8fbf6a;
+  --warn: #f0a33a;
+  --error: #ef6b5b;
+
+  --axis-x: #ec5f5a;
+  --axis-y: #8ccf55;
+  --axis-z: #5a9bf0;
+
+  --font-ui: 'IBM Plex Sans Condensed', system-ui, sans-serif;
+  --font-num: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --text-xs: 10.5px;
+  --text-sm: 12px;
+  --text-md: 13px;
+
+  --radius: 2px;
+  --row: 26px;
+  --pad: 12px;
+  --inspector-width: 312px;
+}
