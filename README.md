@@ -106,3 +106,17 @@ More in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). What comes next is in
   the box corners land within 0.000001 px of the right pixels.
 - Noise test: with imprecise clicks (σ = 0.7 px), 10 lines per vanishing
   point give a clearly smaller focal-length error than 2 lines.
+
+## License
+
+Copyright © 2026 Gelain.
+
+Fuga is free software: you can redistribute it and/or modify it under the
+terms of the [GNU General Public License](LICENSE) as published by the Free
+Software Foundation, either version 3 of the License, or (at your option)
+any later version. It is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.
+
+In short: use it for anything, including commercial work. If you distribute
+a modified version, share its source under the same license.

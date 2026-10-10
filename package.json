@@ -7,7 +7,7 @@
   "private": true,
   "type": "module",
   "main": "out/main/index.js",
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-or-later",
   "author": "Gelain",
   "engines": {
     "node": ">=22.12"
