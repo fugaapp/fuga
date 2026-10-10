@@ -16,7 +16,7 @@ export interface ExportTarget {
 export const EXPORT_TARGETS: readonly ExportTarget[] = [
   { id: 'blender', label: 'Blender', extension: 'py', hint: 'Text Editor → Run Script', write: exportBlender },
   { id: 'maya', label: 'Maya', extension: 'py', hint: 'Script Editor → Python', write: exportMaya },
-  { id: 'usd', label: 'USD', extension: 'usda', hint: 'Houdini · C4D · Unreal · Blender', write: exportUsd },
+  { id: 'usd', label: 'USD', extension: 'usda', hint: 'Houdini · C4D · Unreal', write: exportUsd },
   { id: 'json', label: 'JSON', extension: 'json', hint: 'Raw intrinsics + extrinsics', write: exportJson },
 ];
 
