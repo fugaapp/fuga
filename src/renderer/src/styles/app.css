@@ -93,6 +93,24 @@ select {
   flex: 1;
 }
 
+.update-pill {
+  -webkit-app-region: no-drag;
+  height: 20px;
+  padding: 0 10px;
+  border: 1px solid var(--signal);
+  border-radius: 10px;
+  background: none;
+  color: var(--signal);
+  font: 500 var(--text-xs) var(--font-num);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.update-pill:hover {
+  background: var(--signal);
+  color: var(--signal-ink);
+}
+
 .viewport {
   grid-area: view;
   position: relative;

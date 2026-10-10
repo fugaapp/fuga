@@ -11,7 +11,14 @@ to fix the most common complaints of its users — see
 
 > The name comes from *ponto de fuga*, Portuguese for vanishing point.
 
-## Running
+## Download
+
+Installers for Windows, macOS and Linux are on the
+[Releases page](https://github.com/gln11/gln/releases). The app tells you
+when a new version is out. Unsigned builds show a one-time warning on first
+launch — see [docs/RELEASING.md](docs/RELEASING.md#unsigned-installers-what-users-see).
+
+## Running from source
 
 Requires Node 22.12 or newer.
 
@@ -22,6 +29,8 @@ npm test           # precision tests for the solver and exporters
 npm run typecheck  # type-check the whole project
 npm run dist       # build an installer for your OS (into release/)
 ```
+
+Publishing a new version: [docs/RELEASING.md](docs/RELEASING.md).
 
 To try it without a photo of your own: `npm run sample` renders
 `samples/synthetic-box.png` (a box photographed by a **known** camera) and
@@ -77,7 +86,8 @@ src/
     src/panels/    side panel
     src/state/     document + undo history
 tests/         Core tests against synthetic cameras (ground truth)
-scripts/       Sample image generator
+scripts/       Sample image and app icon generators
+build/         App icon (used by the installers)
 docs/          Decisions, architecture, roadmap
 ```
 

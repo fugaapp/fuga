@@ -1,3 +1,5 @@
+import type { UpdateInfo } from './release';
+
 // The one contract between the Electron main process and the UI.
 // The renderer is sandboxed (no Node), so every file-system touch goes through here.
 
@@ -20,10 +22,12 @@ export type MenuCommand =
   | 'undo'
   | 'redo'
   | 'zoom-fit'
-  | 'zoom-100';
+  | 'zoom-100'
+  | 'check-updates';
 
 export interface FugaApi {
   readonly platform: string;
+  readonly version: string;
   openImage(): Promise<OpenedImage | null>;
   readImage(path: string): Promise<OpenedImage>;
   openProject(): Promise<OpenedProject | null>;
@@ -32,6 +36,10 @@ export interface FugaApi {
   exportFile(content: string, defaultName: string, extension: string): Promise<string | null>;
   /** Absolute path of a dropped file (Electron's webUtils). */
   pathForFile(file: File): string;
+  /** Latest release on GitHub if newer than this build, else null. */
+  checkForUpdate(): Promise<UpdateInfo | null>;
+  /** Open an https URL in the default browser. */
+  openExternal(url: string): void;
   onMenu(listener: (command: MenuCommand) => void): () => void;
 }
 
@@ -43,5 +51,8 @@ export const Channels = {
   openProject: 'fuga:open-project',
   saveProject: 'fuga:save-project',
   exportFile: 'fuga:export-file',
+  checkUpdate: 'fuga:check-update',
+  openExternal: 'fuga:open-external',
+  version: 'fuga:version',
   menu: 'fuga:menu',
 } as const;
