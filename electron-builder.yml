@@ -32,8 +32,8 @@ fileAssociations:
 # what makes the in-app update notice appear. Keep in sync with src/shared/release.ts.
 publish:
   provider: github
-  owner: gln11
-  repo: gln
+  owner: fuga-app
+  repo: fuga
   releaseType: draft
 
 mac:
