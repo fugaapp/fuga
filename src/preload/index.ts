@@ -12,6 +12,7 @@ const api: FugaApi = {
   exportFile: (content, defaultName, extension) => ipcRenderer.invoke(Channels.exportFile, content, defaultName, extension),
   checkForUpdate: () => ipcRenderer.invoke(Channels.checkUpdate),
   openExternal: (url) => ipcRenderer.send(Channels.openExternal, url),
+  setTheme: (theme) => ipcRenderer.send(Channels.setTheme, theme),
   pathForFile: (file) => webUtils.getPathForFile(file),
   onMenu: (listener) => {
     const handler = (_: unknown, command: MenuCommand) => listener(command);

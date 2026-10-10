@@ -23,7 +23,8 @@ export type MenuCommand =
   | 'redo'
   | 'zoom-fit'
   | 'zoom-100'
-  | 'check-updates';
+  | 'check-updates'
+  | 'appearance';
 
 export interface FugaApi {
   readonly platform: string;
@@ -38,6 +39,8 @@ export interface FugaApi {
   pathForFile(file: File): string;
   /** Latest release on GitHub if newer than this build, else null. */
   checkForUpdate(): Promise<UpdateInfo | null>;
+  /** Make native menus/dialogs follow the app theme. */
+  setTheme(theme: 'system' | 'dark' | 'light'): void;
   /** Open an https URL in the default browser. */
   openExternal(url: string): void;
   onMenu(listener: (command: MenuCommand) => void): () => void;
@@ -53,6 +56,7 @@ export const Channels = {
   exportFile: 'fuga:export-file',
   checkUpdate: 'fuga:check-update',
   openExternal: 'fuga:open-external',
+  setTheme: 'fuga:set-theme',
   version: 'fuga:version',
   menu: 'fuga:menu',
 } as const;

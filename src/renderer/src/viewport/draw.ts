@@ -25,7 +25,9 @@ export interface Palette {
   readonly y: string;
   readonly z: string;
   readonly signal: string;
-  readonly text: string;
+  /** Neutral ink for marks drawn over the photo, and the halo that keeps them legible on any image. */
+  readonly ink: string;
+  readonly halo: string;
   readonly viewport: string;
   readonly numFont: string;
 }
@@ -38,7 +40,8 @@ export function readPalette(el: Element): Palette {
     y: v('--axis-y'),
     z: v('--axis-z'),
     signal: v('--signal'),
-    text: v('--text'),
+    ink: v('--overlay-ink'),
+    halo: v('--overlay-halo'),
     viewport: v('--bg-viewport'),
     numFont: v('--font-num'),
   };
@@ -80,6 +83,11 @@ export function drawScene(ctx: CanvasRenderingContext2D, view: View, scene: Scen
       ctx.fillRect(view.x, view.y, p.image.width * view.scale, p.image.height * view.scale);
     }
   }
+
+  // Everything from here on sits on top of an arbitrary photo: a soft halo in the
+  // opposite tone keeps it readable on bright skies and dark interiors alike.
+  ctx.shadowColor = pal.halo;
+  ctx.shadowBlur = 3;
 
   const cam = result?.ok ? result.solution : null;
   if (cam && display.showGrid && p.image) {
@@ -132,7 +140,9 @@ export function drawScene(ctx: CanvasRenderingContext2D, view: View, scene: Scen
   // Principal point: draggable when manual, a readout of the solve otherwise.
   const pp = cam && (p.mode === '3vp' || p.principalPoint.auto) ? cam.principalPoint : p.principalPoint.point;
   const ppEditable = p.mode !== '3vp' && !p.principalPoint.auto;
-  drawCross(ctx, S(pp), ppEditable ? pal.text : 'rgba(233,229,220,0.45)', 6, sameHandle(scene.hover, { kind: 'principal' }) && ppEditable ? pal.signal : null);
+  ctx.globalAlpha = ppEditable ? 1 : 0.5;
+  drawCross(ctx, S(pp), pal.ink, 6, sameHandle(scene.hover, { kind: 'principal' }) && ppEditable ? pal.signal : null);
+  ctx.globalAlpha = 1;
 
   // Reference distance
   if (p.reference.enabled) {
@@ -144,17 +154,19 @@ export function drawScene(ctx: CanvasRenderingContext2D, view: View, scene: Scen
     line(ctx, o, r);
     ctx.restore();
     const hot = sameHandle(scene.hover, { kind: 'reference' }) || sameHandle(scene.active, { kind: 'reference' });
-    drawDiamond(ctx, r, hot ? pal.signal : pal.text);
-    label(ctx, `${p.reference.distance}`, [(o[0] + r[0]) / 2 + 8, (o[1] + r[1]) / 2 - 8], pal.text, pal);
+    drawDiamond(ctx, r, hot ? pal.signal : pal.ink);
+    label(ctx, `${p.reference.distance}`, [(o[0] + r[0]) / 2 + 8, (o[1] + r[1]) / 2 - 8], pal.ink, pal);
   }
 
   // Origin
   const hotOrigin = sameHandle(scene.hover, { kind: 'origin' }) || sameHandle(scene.active, { kind: 'origin' });
-  drawOrigin(ctx, S(p.origin), hotOrigin ? pal.signal : pal.text);
+  drawOrigin(ctx, S(p.origin), hotOrigin ? pal.signal : pal.ink);
+  ctx.shadowBlur = 0;
 }
 
 function drawGrid(ctx: CanvasRenderingContext2D, cam: CameraSolution, p: Project, S: (v: Vec2) => Vec2, pal: Palette): void {
   const cell = p.reference.enabled ? p.reference.distance : 1;
+  const base = ctx.globalAlpha; // the overlay-opacity setting
   const n = 10;
   ctx.lineWidth = 1;
   for (let i = -n; i <= n; i++) {
@@ -164,9 +176,11 @@ function drawGrid(ctx: CanvasRenderingContext2D, cam: CameraSolution, p: Project
     ] as [Vec3, Vec3, 'x' | 'y'][]) {
       const seg = projectSegment(cam, a, b);
       if (!seg) continue;
-      ctx.strokeStyle = i === 0 ? pal[axis] : 'rgba(233,229,220,0.32)';
+      ctx.strokeStyle = i === 0 ? pal[axis] : pal.ink;
       ctx.lineWidth = i === 0 ? 1.5 : 1;
+      ctx.globalAlpha = i === 0 ? base : base * 0.32;
       line(ctx, S(seg[0]), S(seg[1]));
+      ctx.globalAlpha = base;
     }
   }
   // Vertical axis: a short Z gizmo at the origin.
@@ -185,12 +199,12 @@ function drawGrid(ctx: CanvasRenderingContext2D, cam: CameraSolution, p: Project
     if (Number.isFinite(y0) && Number.isFinite(y1)) {
       ctx.save();
       ctx.setLineDash([10, 6]);
-      ctx.strokeStyle = pal.text;
+      ctx.strokeStyle = pal.ink;
       ctx.lineWidth = 1;
       line(ctx, S([-w, y0]), S([2 * w, y1]));
       ctx.restore();
       const at = S([0, -(h[2]) / h[1]]);
-      label(ctx, 'HORIZON', [Math.max(at[0], 8) + 4, at[1] - 6], pal.text, pal);
+      label(ctx, 'HORIZON', [Math.max(at[0], 8) + 4, at[1] - 6], pal.ink, pal);
     }
   }
 }
@@ -318,11 +332,11 @@ export function drawLoupe(
   ctx.restore();
   ctx.save();
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.strokeStyle = pal.text;
+  ctx.strokeStyle = pal.ink;
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.arc(at[0], at[1], R + 0.5, 0, Math.PI * 2);
   ctx.stroke();
-  label(ctx, `×${zoom}`, [at[0] + R * 0.62, at[1] + R * 0.86], pal.text, pal);
+  label(ctx, `×${zoom}`, [at[0] + R * 0.62, at[1] + R * 0.86], pal.ink, pal);
   ctx.restore();
 }

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useImperativeHandle, useLayoutEffect, useRef, u
 import { closestOnLine, projectDirection, type Project, type SolveResult, type Vec2, type Vec3 } from '../../../core';
 import { handlePosition, moveHandle, type GroupIndex, type Handle } from '../state/edits';
 import type { History } from '../state/history';
-import { drawLoupe, drawScene, groupCount, readPalette, toImage, toScreen, type Display, type Palette, type View } from './draw';
+import { drawLoupe, drawScene, groupCount, readPalette, toImage, toScreen, type Display, type View } from './draw';
 
 export interface ViewportApi {
   fit(): void;
@@ -23,6 +23,8 @@ interface Props {
   onSelect: (h: Handle | null) => void;
   onCursor: (image: Vec2 | null) => void;
   onZoom: (scale: number) => void;
+  /** Changes whenever theme or colours change, so the canvas repaints with them. */
+  paletteKey: string;
 }
 
 const HIT_RADIUS = 8;
@@ -61,10 +63,9 @@ function hitTest(p: Project, view: View, pt: Vec2): Handle | null {
   return null;
 }
 
-export function Viewport({ ref, history, project, result, image, display, loupeZoom, selected, onSelect, onCursor, onZoom }: Props) {
+export function Viewport({ ref, history, project, result, image, display, loupeZoom, selected, onSelect, onCursor, onZoom, paletteKey }: Props) {
   const host = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
-  const palette = useRef<Palette | null>(null);
   const [size, setSize] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
   const [view, setView] = useState<View>({ scale: 1, x: 0, y: 0 });
   const [hover, setHover] = useState<Handle | null>(null);
@@ -123,7 +124,6 @@ export function Viewport({ ref, history, project, result, image, display, loupeZ
   // Track the canvas size (CSS pixels).
   useLayoutEffect(() => {
     const el = host.current!;
-    palette.current = readPalette(el);
     const ro = new ResizeObserver(([entry]) => setSize({ w: entry.contentRect.width, h: entry.contentRect.height }));
     ro.observe(el);
     return () => ro.disconnect();
@@ -140,8 +140,9 @@ export function Viewport({ ref, history, project, result, image, display, loupeZ
   // Paint.
   useEffect(() => {
     const c = canvas.current;
-    const pal = palette.current;
-    if (!c || !pal || size.w === 0) return;
+    if (!c || !host.current || size.w === 0) return;
+    // Read colours on every paint: theme and user colours can change at any time.
+    const pal = readPalette(host.current);
     const dpr = window.devicePixelRatio || 1;
     if (c.width !== Math.round(size.w * dpr) || c.height !== Math.round(size.h * dpr)) {
       c.width = Math.round(size.w * dpr);
@@ -161,7 +162,7 @@ export function Viewport({ ref, history, project, result, image, display, loupeZ
       const at: Vec2 = [pointer[0] - off < 80 ? pointer[0] + off : pointer[0] - off, pointer[1] - off < 80 ? pointer[1] + off : pointer[1] - off];
       drawLoupe(ctx, view, scene, pal, dpr, focus, at, loupeZoom);
     }
-  }, [project, result, image, display, hover, drag, selected, view, size, pointer, loupeZoom]);
+  }, [project, result, image, display, hover, drag, selected, view, size, pointer, loupeZoom, paletteKey]);
 
   const local = (e: { clientX: number; clientY: number }): Vec2 => {
     const r = canvas.current!.getBoundingClientRect();

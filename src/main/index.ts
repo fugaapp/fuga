@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu, shell, type MenuItemConstructorOptions } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, Menu, nativeTheme, shell, type MenuItemConstructorOptions } from 'electron';
 import { readFile, writeFile } from 'node:fs/promises';
 import { basename, extname, join } from 'node:path';
 import { Channels, IMAGE_EXTENSIONS, type MenuCommand, type OpenedImage } from '../shared/ipc';
@@ -71,6 +71,9 @@ function registerIpc(): void {
 
   ipcMain.handle(Channels.checkUpdate, () => checkForUpdate());
   ipcMain.on(Channels.openExternal, (_, url: string) => openHttps(url));
+  ipcMain.on(Channels.setTheme, (_, theme: unknown) => {
+    if (theme === 'system' || theme === 'dark' || theme === 'light') nativeTheme.themeSource = theme;
+  });
   ipcMain.on(Channels.version, (e) => {
     e.returnValue = app.getVersion();
   });
@@ -144,6 +147,8 @@ function buildMenu(): void {
     {
       label: 'View',
       submenu: [
+        { label: 'Appearance…', accelerator: 'CmdOrCtrl+,', click: send('appearance') },
+        { type: 'separator' },
         { label: 'Fit Photo', accelerator: 'CmdOrCtrl+0', click: send('zoom-fit') },
         { label: 'Actual Pixels', accelerator: 'CmdOrCtrl+1', click: send('zoom-100') },
         { type: 'separator' },
