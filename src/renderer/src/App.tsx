@@ -3,6 +3,7 @@ import { createProject, EXPORT_TARGETS, parseProject, solveCamera, toSolverInput
 import type { MenuCommand, OpenedImage } from '../../shared/ipc';
 import type { UpdateInfo } from '../../shared/release';
 import { EmptyState } from './EmptyState';
+import { Mark } from './Mark';
 import { Inspector } from './panels/Inspector';
 import { removeLine, type Handle } from './state/edits';
 import { History, useHistory } from './state/history';
@@ -203,7 +204,10 @@ export function App() {
   return (
     <div className="shell">
       <header className="topbar">
-        <span className="wordmark">FUGA</span>
+        <span className="wordmark">
+          <Mark size={16} />
+          FUGA
+        </span>
         <span className="doc-title" data-dirty={history.dirty && !!project.image}>
           {title}
         </span>

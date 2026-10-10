@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Fuga">
+  <title>Fuga</title>
+  <rect x="87.0" y="87.0" width="849.9" height="849.9" rx="191.2" fill="#171716"/>
+  <line x1="208.15" y1="501.38" x2="512.00" y2="501.38" stroke="#5F5B54" stroke-width="13.81" stroke-linecap="round"/>
+  <line x1="752.31" y1="501.38" x2="815.85" y2="501.38" stroke="#5F5B54" stroke-width="13.81" stroke-linecap="round"/>
+  <line x1="235.78" y1="308.02" x2="524.96" y2="442.97" stroke="#E9E5DC" stroke-width="35.91" stroke-linecap="round"/>
+  <line x1="235.78" y1="611.87" x2="516.66" y2="536.96" stroke="#E9E5DC" stroke-width="35.91" stroke-linecap="round"/>
+  <line x1="235.78" y1="805.22" x2="538.74" y2="583.05" stroke="#E9E5DC" stroke-width="35.91" stroke-linecap="round"/>
+  <path d="M650.11 440.61L710.88 501.38L650.11 562.15L589.34 501.38Z" fill="none" stroke="#F5C518" stroke-width="30.38" stroke-linejoin="miter"/>
+</svg>
