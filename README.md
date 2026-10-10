@@ -1,100 +1,98 @@
 # Fuga
 
-Calibração de câmara a partir de uma única fotografia, por pontos de fuga.
-Traças as arestas paralelas da foto, a Fuga calcula a distância focal, a
-rotação e a posição da câmara, e exporta uma câmara pronta para **Blender**,
-**Maya**, **USD** (Houdini, Cinema 4D, Unreal, Omniverse…) ou **JSON**.
+Camera calibration from a single photo, using vanishing points. You trace
+parallel edges in the photo; Fuga solves the focal length, rotation and
+position of the camera and exports a ready-to-use camera for **Blender**,
+**Maya**, **USD** (Houdini, Cinema 4D, Unreal, Omniverse…) or **JSON**.
 
-Inspirada no [fSpy](https://github.com/stuffmatic/fSpy), reescrita do zero
-para resolver as queixas mais comuns dos utilizadores dele: ver
-[docs/DECISOES.md](docs/DECISOES.md).
+Inspired by [fSpy](https://github.com/stuffmatic/fSpy), written from scratch
+to fix the most common complaints of its users — see
+[docs/DECISIONS.md](docs/DECISIONS.md).
 
-> O nome vem de *ponto de fuga*.
+> The name comes from *ponto de fuga*, Portuguese for vanishing point.
 
-## Correr
+## Running
 
-Precisas de Node 22.12 ou mais recente.
+Requires Node 22.12 or newer.
 
 ```bash
-npm install        # instala dependências (e descarrega o Electron)
-npm run dev        # abre a app com hot-reload
-npm test           # testes de precisão do solver e dos exportadores
-npm run typecheck  # verifica os tipos de todo o projeto
-npm run dist       # gera o instalador para o teu sistema (pasta release/)
+npm install        # install dependencies (also downloads Electron)
+npm run dev        # open the app with hot reload
+npm test           # precision tests for the solver and exporters
+npm run typecheck  # type-check the whole project
+npm run dist       # build an installer for your OS (into release/)
 ```
 
-Para experimentar sem foto tua: `npm run sample` gera
-`samples/synthetic-box.png` (uma caixa renderizada com uma câmara
-**conhecida**) e `samples/synthetic-box.fuga` (o projeto com as arestas já
-traçadas). Abre o `.fuga` em *File → Open Project* e compara o painel
-*Camera* com `samples/synthetic-box.truth.json`: focal 1650 px, posição
+To try it without a photo of your own: `npm run sample` renders
+`samples/synthetic-box.png` (a box photographed by a **known** camera) and
+`samples/synthetic-box.fuga` (a project with the edges already traced).
+Open the `.fuga` via *File → Open Project* and compare the *Camera* panel
+with `samples/synthetic-box.truth.json`: focal length 1650 px, position
 (7, −9, 1.7).
 
-## Como se usa
+## Usage
 
-1. **Abrir foto** — arrasta para a janela ou `Ctrl/⌘ O`.
-2. **Escolher o método** — 2 VP serve para a maioria das fotos de
-   arquitetura/interiores. 3 VP quando as verticais também convergem (foto
-   tirada de cima ou de baixo). 1 VP quando só uma direção converge e sabes
-   a distância focal.
-3. **Traçar as linhas** — arrasta as pontas para cima de arestas paralelas
-   reais. O eixo escolhido em cada grupo é o que **se afasta da câmara**,
-   em direção ao ponto de fuga. Usa `+ line` para acrescentar mais linhas:
-   cada linha extra reduz o erro.
-4. **Origem e escala** — arrasta o ◯ para o ponto que deve ser (0, 0, 0).
-   Liga *Reference distance* e arrasta o ◇ até um ponto de distância
-   conhecida ao longo de um eixo (ex.: uma porta com 2,1 m).
-5. **Verificar** — a grelha do chão e o horizonte têm de "assentar" na foto.
-   O medidor de cada ponto de fuga mostra quanto as linhas discordam entre si
-   (em graus): perto de 0 = bom.
-6. **Exportar** — um clique. No Blender: *Text Editor → Open → Run Script*.
-   No Maya: *Script Editor → Python → Execute*.
+1. **Open a photo** — drop it on the window or press `Ctrl/⌘ O`.
+2. **Pick a method** — 2 VP fits most architecture and interior shots. 3 VP
+   when verticals converge too (shot looking up or down). 1 VP when only one
+   direction converges and you know the focal length.
+3. **Trace lines** — drag the endpoints onto real parallel edges. The axis
+   chosen for each group is the one **receding from the camera**, toward the
+   vanishing point. Use `+ line` to add more lines: every extra line reduces
+   the error.
+4. **Origin and scale** — drag the ◯ to the point that should be (0, 0, 0).
+   Enable *Reference distance* and drag the ◇ to a point at a known distance
+   along an axis (e.g. a 2.1 m door).
+5. **Check** — the ground grid and horizon must sit on the photo. Each
+   vanishing point's meter shows how much its lines disagree (in degrees):
+   close to 0 is good.
+6. **Export** — one click. Blender: *Text Editor → Open → Run Script*.
+   Maya: *Script Editor → Python → Execute*.
 
-| Atalho | Ação |
+| Shortcut | Action |
 | --- | --- |
-| roda do rato / pinça | zoom em torno do cursor |
-| arrastar no vazio | mover a vista |
-| `Shift` + arrastar | movimento fino (10×) |
-| setas / `Shift` + setas | empurrar o ponto selecionado 1 px / 0,1 px de ecrã |
-| `[` `]` | zoom da lupa (×2 … ×32) |
-| `Delete` | apagar a linha selecionada |
-| `F`, `Ctrl/⌘ 0`, `Ctrl/⌘ 1` | enquadrar foto, enquadrar, pixels reais |
-| `Ctrl/⌘ Z`, `Ctrl/⌘ Shift Z` | desfazer / refazer |
+| mouse wheel / pinch | zoom around the cursor |
+| drag on empty space | pan |
+| `Shift` + drag | fine movement (10×) |
+| arrows / `Shift` + arrows | nudge the selected point 1 / 0.1 screen px |
+| `[` `]` | loupe zoom (×2 … ×32) |
+| `Delete` | delete the selected line |
+| `F`, `Ctrl/⌘ 0`, `Ctrl/⌘ 1` | fit photo, fit, actual pixels |
+| `Ctrl/⌘ Z`, `Ctrl/⌘ Shift Z` | undo / redo |
 
-## Estrutura
+## Layout
 
 ```
 src/
-  core/        Matemática pura em TypeScript — sem DOM, sem Node, sem Electron.
-    math/        vetores, matrizes 3×3, decomposição em valores próprios
-    solver/      pontos de fuga, solver 1/2/3 VP, projeção
+  core/        Pure TypeScript math — no DOM, no Node, no Electron.
+    math/        vectors, 3×3 matrices, eigen-decomposition
+    solver/      vanishing points, 1/2/3-VP solver, projection
     export/      Blender, Maya, USD, JSON
-    project/     formato do ficheiro .fuga
-  main/        Processo principal do Electron: janela, menus, ficheiros
-  preload/     Ponte segura entre o Electron e a interface
-  shared/      Contrato de IPC (tipos partilhados main ↔ interface)
-  renderer/    Interface em React
-    src/viewport/  canvas: desenho, arrastar, zoom, lupa
-    src/panels/    painel lateral
-    src/state/     documento + histórico de undo
-tests/         Testes do core com câmaras sintéticas (ground truth)
-scripts/       Gerador da imagem de exemplo
-docs/          Decisões, arquitetura e roadmap
+    project/     the .fuga file format
+  main/        Electron main process: window, menus, files
+  preload/     Secure bridge between Electron and the UI
+  shared/      IPC contract (types shared by main and UI)
+  renderer/    React UI
+    src/viewport/  canvas: drawing, dragging, zoom, loupe
+    src/panels/    side panel
+    src/state/     document + undo history
+tests/         Core tests against synthetic cameras (ground truth)
+scripts/       Sample image generator
+docs/          Decisions, architecture, roadmap
 ```
 
-Mais detalhe em [docs/ARQUITETURA.md](docs/ARQUITETURA.md). O que vem a seguir
-está em [docs/ROADMAP.md](docs/ROADMAP.md).
+More in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). What comes next is in
+[docs/ROADMAP.md](docs/ROADMAP.md).
 
-## Precisão, e como é verificada
+## Precision, and how it is checked
 
-- Cada teste cria uma câmara **conhecida**, projeta as arestas de uma caixa,
-  entrega os pixels ao solver e compara: focal, rotação e posição voltam com
-  erro da ordem de 10⁻⁹.
-- Os exportadores são testados em *round-trip*: lê-se o ficheiro gerado,
-  reconstrói-se o modelo de câmara do Blender/Maya/USD e confirma-se que
-  cada ponto 3D cai no mesmo pixel.
-- O `.usda` exportado foi também aberto com a biblioteca oficial da Pixar
-  (`usd-core`): os cantos da caixa caem nos pixels certos a menos de
-  0,000001 px.
-- Teste de ruído: com cliques imprecisos (σ = 0,7 px), 10 linhas por ponto
-  de fuga dão um erro de focal claramente menor do que 2 linhas.
+- Each test builds a **known** camera, projects the edges of a box, hands
+  the pixels to the solver and compares: focal length, rotation and position
+  come back with errors around 10⁻⁹.
+- Exporters are round-trip tested: the exported file is parsed, the
+  Blender/Maya/USD camera model is rebuilt from it, and every 3D point must
+  land on the same pixel.
+- An exported `.usda` was also opened with Pixar's own library (`usd-core`):
+  the box corners land within 0.000001 px of the right pixels.
+- Noise test: with imprecise clicks (σ = 0.7 px), 10 lines per vanishing
+  point give a clearly smaller focal-length error than 2 lines.
