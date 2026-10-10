@@ -16,6 +16,8 @@ Inspired by [fSpy](https://github.com/stuffmatic/fSpy), written from scratch
 to fix the most common complaints of its users — see
 [docs/DECISIONS.md](docs/DECISIONS.md).
 
+Made by Gelain with AI assistance (Claude) — [how it was made](#how-fuga-was-made).
+
 > The name comes from *ponto de fuga*, Portuguese for vanishing point.
 
 ![Fuga solving a camera from a photo of a box](docs/guide/shots/main-dark.png)
@@ -125,6 +127,20 @@ More in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). What comes next is in
   the box corners land within 0.000001 px of the right pixels.
 - Noise test: with imprecise clicks (σ = 0.7 px), 10 lines per vanishing
   point give a clearly smaller focal-length error than 2 lines.
+
+## How Fuga was made
+
+Fuga was designed and directed by Gelain, a motion designer, and written with
+the help of AI (Claude, by Anthropic). Gelain decided what to build and how it
+should look and feel: the problems to solve, the workflow, the visual identity.
+The AI wrote most of the code and documentation.
+
+We say this up front because you deserve to know what you're running. It is
+also why the project leans so hard on verification: every solver result is
+checked by automated tests against cameras with known values, exported files
+are re-projected through each 3D application's camera model, and the full
+source is public so anyone can review it. If you find something wrong,
+[please report it](https://github.com/fugaapp/fuga/issues).
 
 ## Privacy and security
 
