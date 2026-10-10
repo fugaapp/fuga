@@ -1,5 +1,9 @@
-# Weekly dependency and GitHub Actions updates, grouped into one PR each so
-# they are easy to review. Security fixes are opened immediately.
+# Weekly dependency and GitHub Actions updates.
+# Minor and patch versions arrive grouped in one PR. Major versions of the
+# build toolchain are ignored: they must move together (electron-vite pins
+# the Vite major, Vite pins the plugin, TypeScript majors change the
+# compiler) and are upgraded deliberately, not by a bot.
+# Security fixes are opened immediately regardless.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -8,7 +12,20 @@ updates:
       interval: weekly
     groups:
       npm:
-        patterns: ['*']
+        update-types: [minor, patch]
+    ignore:
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      - dependency-name: vite
+        update-types: [version-update:semver-major]
+      - dependency-name: vitest
+        update-types: [version-update:semver-major]
+      - dependency-name: '@vitejs/plugin-react'
+        update-types: [version-update:semver-major]
+      - dependency-name: electron-vite
+        update-types: [version-update:semver-major]
+      - dependency-name: '@types/node'
+        update-types: [version-update:semver-major] # tracks the Node version we target (22)
   - package-ecosystem: github-actions
     directory: /
     schedule:
