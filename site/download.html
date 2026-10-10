@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Download Fuga</title>
+<meta name="description" content="Download Fuga for Windows, macOS or Linux. Free and open source.">
+<meta property="og:title" content="Download Fuga">
+<meta property="og:description" content="Free camera matching for Blender, Maya and USD — Windows, macOS and Linux.">
+<meta property="og:image" content="https://fugaapp.github.io/fuga/assets/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/fuga-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Fuga home">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="currentColor" stroke-width="3.6" stroke-linecap="round"><line x1="4" y1="8" x2="24.94" y2="17.77"/><line x1="4" y1="30" x2="24.34" y2="24.58"/><line x1="4" y1="44" x2="25.94" y2="27.91"/></g><path d="M34 17.6L38.4 22L34 26.4L29.6 22Z" fill="none" stroke="var(--signal)" stroke-width="3.2"/></svg>
+      FUGA
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="download.html" aria-current="page">Download</a>
+      <a href="assets/Fuga-User-Guide.pdf">Guide</a>
+      <a class="gh" href="https://github.com/fugaapp/fuga">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero" style="padding-bottom:24px">
+    <div class="wrap">
+      <p class="eyebrow">Free · No account needed</p>
+      <h1>Download Fuga</h1>
+      <p class="release-meta" data-release-meta>Looking for the newest version…</p>
+      <div class="notice" data-no-release hidden>
+        <strong>The first version is almost ready.</strong>
+        <p class="muted" style="margin:6px 0 0">Installers will appear here the moment it's published. To be told when it happens, open the <a href="https://github.com/fugaapp/fuga">GitHub page</a> and click <em>Watch → Custom → Releases</em>.</p>
+      </div>
+
+      <div class="platforms">
+        <div class="platform" id="windows">
+          <span class="tag"></span>
+          <h3>Windows</h3>
+          <p class="req">Windows 10 or 11, 64-bit</p>
+          <div class="btns">
+            <a class="btn primary" data-asset="win" href="https://github.com/fugaapp/fuga/releases/latest" aria-disabled="true">Download installer <small>.exe</small></a>
+          </div>
+        </div>
+
+        <div class="platform" id="mac">
+          <span class="tag"></span>
+          <h3>macOS</h3>
+          <p class="req">macOS 12 Monterey or newer</p>
+          <div class="btns">
+            <a class="btn primary" data-asset="macArm" href="https://github.com/fugaapp/fuga/releases/latest" aria-disabled="true">Apple silicon <small>.dmg</small></a>
+            <a class="btn" data-asset="macIntel" href="https://github.com/fugaapp/fuga/releases/latest" aria-disabled="true">Intel <small>.dmg</small></a>
+          </div>
+          <p class="hint">Not sure which? Click the Apple menu  → <em>About This Mac</em>. If it says <strong>Chip: Apple M…</strong>, choose Apple silicon. If it says <strong>Processor: Intel</strong>, choose Intel.</p>
+        </div>
+
+        <div class="platform" id="linux">
+          <span class="tag"></span>
+          <h3>Linux</h3>
+          <p class="req">64-bit, most distributions (AppImage)</p>
+          <div class="btns">
+            <a class="btn primary" data-asset="linux" href="https://github.com/fugaapp/fuga/releases/latest" aria-disabled="true">Download AppImage <small>.AppImage</small></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="first-launch">
+    <div class="wrap">
+      <p class="kicker"><b>01</b>After downloading</p>
+      <h2>Opening Fuga the first time</h2>
+      <p class="muted" style="max-width:68ch">Your computer may warn you once, because Fuga is a free app without a paid security certificate. That's normal — the installers are built automatically by GitHub from the public code. After the first launch it opens like any other app.</p>
+      <div class="grid three" style="margin-top:32px">
+        <div class="card">
+          <h3>Windows</h3>
+          <ol class="howto">
+            <li><span>Open the downloaded <strong>.exe</strong>.</span></li>
+            <li><span>If a blue window says <strong>"Windows protected your PC"</strong>, click <strong>More info</strong>, then <strong>Run anyway</strong>.</span></li>
+            <li><span>Follow the installer. Fuga appears in the Start menu.</span></li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>macOS</h3>
+          <ol class="howto">
+            <li><span>Open the <strong>.dmg</strong> and drag Fuga into <strong>Applications</strong>.</span></li>
+            <li><span>Open Fuga. If macOS says it <strong>can't be opened</strong>, click <strong>Done</strong>.</span></li>
+            <li><span>Go to <strong>System Settings → Privacy &amp; Security</strong>, scroll down and click <strong>Open Anyway</strong>.</span></li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Linux</h3>
+          <ol class="howto">
+            <li><span>Right-click the <strong>.AppImage</strong> → <em>Properties</em> → allow <strong>executing as a program</strong> (or run <code>chmod +x Fuga-*.AppImage</code>).</span></li>
+            <li><span>Double-click it to start.</span></li>
+            <li><span>If it doesn't open, start it from a terminal with <code>--no-sandbox</code>.</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap grid two" style="gap:48px">
+      <div>
+        <p class="kicker"><b>02</b>Updates</p>
+        <h2>Always up to date</h2>
+        <p class="muted">When a new version is out, Fuga shows a small yellow notice at the top of the window. Click it and you land on this page, which always has the newest installers. Install it over the old one — your projects keep working.</p>
+        <p><a href="https://github.com/fugaapp/fuga/releases">All versions and what changed in each</a></p>
+      </div>
+      <div>
+        <p class="kicker"><b>03</b>Next</p>
+        <h2>Your first camera</h2>
+        <p class="muted">The illustrated guide takes about ten minutes and walks you through matching your first photo, step by step.</p>
+        <p><a class="btn" href="assets/Fuga-User-Guide.pdf">Open the guide <small>PDF</small></a></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <details>
+        <summary>For the curious: check that a download is genuine</summary>
+        <p>Every official installer carries a signed record of the exact source code and build that produced it. With the GitHub command-line tool installed, run <code>gh attestation verify &lt;file&gt; --repo fugaapp/fuga</code>.</p>
+      </details>
+      <details>
+        <summary>For developers: build from source</summary>
+        <p>Install Node.js 22, then: <code>git clone https://github.com/fugaapp/fuga.git</code>, <code>cd fuga</code>, <code>npm install</code>, <code>npm run dev</code>.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Fuga · free and open source · GPL-3.0 · made by Gelain</span>
+    <nav aria-label="Footer">
+      <a href="./">Home</a>
+      <a href="assets/Fuga-User-Guide.pdf">User guide</a>
+      <a href="https://github.com/fugaapp/fuga">Source code</a>
+      <a href="https://github.com/fugaapp/fuga/issues">Report a problem</a>
+      <a href="https://github.com/fugaapp/fuga/blob/main/PRIVACY.md">Privacy</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/site.js" defer></script>
+</body>
+</html>

@@ -1,9 +1,12 @@
 /** Where releases are published. Keep in sync with `publish` in electron-builder.yml. */
 export const GITHUB_REPO = 'fugaapp/fuga';
 
+/** Beginner-friendly download page (site/download.html on GitHub Pages); always lists the newest installers. */
+export const DOWNLOAD_PAGE = 'https://fugaapp.github.io/fuga/download.html';
+
 export interface UpdateInfo {
   readonly version: string;
-  /** Release page: notes plus the installers for every platform. */
+  /** Where the update notice sends people: the download page, which picks their system. */
   readonly url: string;
 }
 
