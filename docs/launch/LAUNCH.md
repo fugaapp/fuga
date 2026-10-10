@@ -11,6 +11,26 @@ Links used below:
 - Download: https://fugaapp.github.io/fuga/download.html
 - Source: https://github.com/fugaapp/fuga
 
+## The official statement
+
+Use these words whenever someone asks how Fuga was made (bios, About
+sections, interviews). The same text is in the app (Help → About Fuga), the
+README, the website and the user guide.
+
+> Fuga was designed and directed by Gelain, a motion designer and 3D
+> generalist, to find the exact camera behind a photo (its lens, angle and
+> position) and bring it into 3D software, so the scene lines up with the
+> picture without trial and error. It was written with the help of AI (Claude,
+> by Anthropic). Every result is checked by automated tests against cameras
+> with known values, and the source is public for anyone to review.
+
+> Fuga foi desenhada e dirigida por Gelain, motion designer e generalista 3D,
+> para descobrir a câmara exata por trás de uma fotografia (lente, ângulo e
+> posição) e levá-la para o software 3D, de modo que a cena encaixe na imagem
+> sem tentativa e erro. Foi escrita com a ajuda de IA (Claude, da Anthropic).
+> Cada resultado é verificado por testes automáticos contra câmaras com
+> valores conhecidos, e o código é público para quem o quiser rever.
+
 ## Before you post
 
 - [ ] Version 0.1.0 is published on GitHub (not a draft), and you installed it

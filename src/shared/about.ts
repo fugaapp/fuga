@@ -3,7 +3,8 @@
 export const MADE_WITH_AI_SHORT = 'Made by Gelain with AI assistance (Claude).';
 
 export const MADE_WITH_AI =
-  'Fuga was designed and directed by Gelain, a motion designer, and written with the help of AI ' +
-  '(Claude, by Anthropic). Gelain decided what to build and how it should look and feel; the AI wrote ' +
-  'most of the code. Every result is checked by automated tests against cameras with known values, ' +
-  'and the source is public so anyone can review it.';
+  'Fuga was designed and directed by Gelain, a motion designer and 3D generalist, to find the exact camera ' +
+  'behind a photo (its lens, angle and position) and bring it into 3D software, so the scene lines up with ' +
+  'the picture without trial and error. It was written with the help of AI (Claude, by Anthropic). Every ' +
+  'result is checked by automated tests against cameras with known values, and the source is public for ' +
+  'anyone to review.';

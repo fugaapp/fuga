@@ -130,17 +130,13 @@ More in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). What comes next is in
 
 ## How Fuga was made
 
-Fuga was designed and directed by Gelain, a motion designer, and written with
-the help of AI (Claude, by Anthropic). Gelain decided what to build and how it
-should look and feel: the problems to solve, the workflow, the visual identity.
-The AI wrote most of the code and documentation.
-
-We say this up front because you deserve to know what you're running. It is
-also why the project leans so hard on verification: every solver result is
-checked by automated tests against cameras with known values, exported files
-are re-projected through each 3D application's camera model, and the full
-source is public so anyone can review it. If you find something wrong,
-[please report it](https://github.com/fugaapp/fuga/issues).
+Fuga was designed and directed by Gelain, a motion designer and 3D
+generalist, to find the exact camera behind a photo (its lens, angle and
+position) and bring it into 3D software, so the scene lines up with the
+picture without trial and error. It was written with the help of AI (Claude,
+by Anthropic). Every result is checked by automated tests against cameras
+with known values, and the source is public for anyone to review. If you find
+something wrong, [please report it](https://github.com/fugaapp/fuga/issues).
 
 ## Privacy and security
 
