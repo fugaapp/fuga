@@ -9,6 +9,26 @@
   "main": "out/main/index.js",
   "license": "GPL-3.0-or-later",
   "author": "Gelain",
+  "homepage": "https://github.com/fugaapp/fuga",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fugaapp/fuga.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fugaapp/fuga/issues"
+  },
+  "keywords": [
+    "camera-matching",
+    "camera-calibration",
+    "vanishing-points",
+    "fspy",
+    "blender",
+    "maya",
+    "usd",
+    "photogrammetry",
+    "3d",
+    "electron"
+  ],
   "engines": {
     "node": ">=22.12"
   },
