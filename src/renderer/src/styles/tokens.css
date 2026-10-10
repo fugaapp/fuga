@@ -1,13 +1,28 @@
 /*
- * Fuga — design tokens.
+ * Fuga — design tokens. Values come from the brand guide (brand/guide.html).
  *
- * Direction: a surveyor's instrument, not a web dashboard. The photo is the
- * only thing with colour; chrome is warm graphite with 1px hairlines,
- * numbers are monospaced and right-aligned like a readout, and one signal
- * colour (survey-tape yellow) marks whatever is under your hand. Axis
- * colours follow the X/Y/Z = red/green/blue habit every 3D artist already has.
+ * Two themes share every token name; [data-theme] on <html> picks one.
+ * Text roles: --text and --text-dim are for words (≥ 4.5:1 on their ground);
+ * --text-faint is decorative only (hairline labels, disabled states).
+ * --signal, --axis-x/y/z can be overridden by the user (Appearance panel),
+ * which sets them inline on <html>.
  */
 :root {
+  --font-ui: 'IBM Plex Sans Condensed', system-ui, sans-serif;
+  --font-num: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --text-xs: 10.5px;
+  --text-sm: 12px;
+  --text-md: 13px;
+
+  --radius: 2px;
+  --row: 26px;
+  --pad: 12px;
+  --inspector-width: 312px;
+}
+
+:root,
+:root[data-theme='dark'] {
   color-scheme: dark;
 
   --bg-viewport: #0e0e0d;
@@ -31,15 +46,35 @@
   --axis-y: #8ccf55;
   --axis-z: #5a9bf0;
 
-  --font-ui: 'IBM Plex Sans Condensed', system-ui, sans-serif;
-  --font-num: 'IBM Plex Mono', ui-monospace, monospace;
+  /* Drawn over the photo: a halo in the opposite tone keeps marks legible on any image. */
+  --overlay-ink: #e9e5dc;
+  --overlay-halo: rgba(14, 14, 13, 0.75);
+}
 
-  --text-xs: 10.5px;
-  --text-sm: 12px;
-  --text-md: 13px;
+:root[data-theme='light'] {
+  color-scheme: light;
 
-  --radius: 2px;
-  --row: 26px;
-  --pad: 12px;
-  --inspector-width: 312px;
+  --bg-viewport: #e3e0d8;
+  --bg-chrome: #f4f2ed;
+  --bg-raised: #fbfaf7;
+  --bg-input: #ffffff;
+  --hairline: #dedad2;
+  --hairline-strong: #c9c4b9;
+
+  --text: #1c1b19;
+  --text-dim: #5e5a52;
+  --text-faint: #8f8a80;
+
+  --signal: #8a6800;
+  --signal-ink: #ffffff;
+  --ok: #3b7a2a;
+  --warn: #a15c00;
+  --error: #b42318;
+
+  --axis-x: #c93a33;
+  --axis-y: #3b8a2a;
+  --axis-z: #2e66c4;
+
+  --overlay-ink: #1c1b19;
+  --overlay-halo: rgba(251, 250, 247, 0.8);
 }

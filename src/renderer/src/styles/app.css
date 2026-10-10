@@ -208,13 +208,13 @@ select {
 }
 
 .readout dd small {
-  color: var(--text-faint);
+  color: var(--text-dim);
   margin-left: 4px;
 }
 
 .hint {
   margin: 6px 0 0;
-  color: var(--text-faint);
+  color: var(--text-dim);
   font-size: var(--text-xs);
 }
 
@@ -426,7 +426,7 @@ input[type='range'] {
 }
 
 .export-grid .btn small {
-  color: var(--text-faint);
+  color: var(--text-dim);
   font-size: var(--text-xs);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -480,4 +480,104 @@ kbd {
   border: 1px solid var(--hairline-strong);
   border-radius: var(--radius);
   color: var(--text-dim);
+}
+
+/* ── Appearance popover ────────────────────────────────── */
+
+.popover {
+  position: absolute;
+  top: 40px;
+  right: 8px;
+  z-index: 10;
+  width: 360px;
+  padding: 10px var(--pad) 12px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  display: grid;
+  gap: 4px;
+  animation: pop-in 120ms ease-out;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.popover-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: 500 var(--text-xs) var(--font-num);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.popover .row .label {
+  flex: 0 0 80px;
+}
+
+.popover .segmented {
+  flex: 1;
+}
+
+.popover-rule {
+  height: 1px;
+  margin: 6px 0;
+  background: var(--hairline);
+}
+
+.color-row {
+  display: grid;
+  grid-template-columns: 26px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+}
+
+.swatch {
+  width: 26px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  background: none;
+  cursor: pointer;
+}
+
+.swatch::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.swatch::-webkit-color-swatch {
+  border: 0;
+  border-radius: 1px;
+}
+
+.color-text {
+  display: grid;
+  line-height: 1.25;
+}
+
+.color-text small {
+  color: var(--text-dim);
+  font-size: var(--text-xs);
+}
+
+.popover-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--hairline);
+  color: var(--text-dim);
+  font-size: var(--text-xs);
+}
+
+.topbar {
+  position: relative;
 }

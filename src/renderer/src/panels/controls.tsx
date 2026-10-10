@@ -91,7 +91,7 @@ export function NumberField({
           e.stopPropagation();
         }}
       />
-      {suffix && <span className="num" style={{ color: 'var(--text-faint)', width: 18 }}>{suffix}</span>}
+      {suffix && <span className="num" style={{ color: 'var(--text-dim)', width: 18 }}>{suffix}</span>}
     </span>
   );
 }

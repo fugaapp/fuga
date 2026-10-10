@@ -4,7 +4,9 @@ import type { MenuCommand, OpenedImage } from '../../shared/ipc';
 import type { UpdateInfo } from '../../shared/release';
 import { EmptyState } from './EmptyState';
 import { Mark } from './Mark';
+import { AppearancePanel } from './panels/AppearancePanel';
 import { Inspector } from './panels/Inspector';
+import { useAppearance } from './state/appearance';
 import { removeLine, type Handle } from './state/edits';
 import { History, useHistory } from './state/history';
 import type { Display } from './viewport/draw';
@@ -43,6 +45,8 @@ export function App() {
   const [zoom, setZoom] = useState(1);
   const [notice, setNotice] = useState<string | null>(null);
   const [update, setUpdate] = useState<UpdateInfo | null>(null);
+  const [appearance, setAppearance, theme] = useAppearance();
+  const [appearanceOpen, setAppearanceOpen] = useState(false);
   const viewport = useRef<ViewportApi>(null);
 
   const result = useMemo(() => {
@@ -153,6 +157,7 @@ export function App() {
     'zoom-fit': () => viewport.current?.fit(),
     'zoom-100': () => viewport.current?.actualPixels(),
     'check-updates': () => checkUpdates(true),
+    appearance: () => setAppearanceOpen((o) => !o),
   };
   useEffect(() => api.onMenu((cmd) => commands.current[cmd]()), []);
 
@@ -217,12 +222,23 @@ export function App() {
             Fuga {update.version} available
           </button>
         )}
+        <button type="button" className="btn ghost" aria-expanded={appearanceOpen} onClick={() => setAppearanceOpen((o) => !o)}>
+          Appearance
+        </button>
         <button type="button" className="btn ghost" disabled={!history.canUndo} onClick={() => history.undo()} title="Undo">
           Undo
         </button>
         <button type="button" className="btn ghost" disabled={!history.canRedo} onClick={() => history.redo()} title="Redo">
           Redo
         </button>
+        {appearanceOpen && (
+          <AppearancePanel
+            appearance={appearance}
+            resolved={theme}
+            onChange={setAppearance}
+            onClose={() => setAppearanceOpen(false)}
+          />
+        )}
       </header>
 
       <Viewport
@@ -237,6 +253,7 @@ export function App() {
         onSelect={setSelected}
         onCursor={setCursor}
         onZoom={setZoom}
+        paletteKey={`${theme}:${JSON.stringify(appearance.colors)}`}
       />
       {!project.image && (
         <div style={{ gridArea: 'view', position: 'relative' }}>
@@ -272,7 +289,7 @@ export function App() {
         </span>
         {notice && <span style={{ color: 'var(--text)' }}>{notice}</span>}
         <span className="state" style={{ color: stateColor }}>
-          <span className="num" style={{ color: 'var(--text-faint)', fontSize: 'var(--text-xs)', marginRight: 10 }}>
+          <span className="num" style={{ color: 'var(--text-dim)', fontSize: 'var(--text-xs)', marginRight: 10 }}>
             v{api.version}
           </span>
           <span className="dot" />

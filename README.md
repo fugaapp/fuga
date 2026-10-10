@@ -71,6 +71,7 @@ with `samples/synthetic-box.truth.json`: focal length 1650 px, position
 | `Delete` | delete the selected line |
 | `F`, `Ctrl/⌘ 0`, `Ctrl/⌘ 1` | fit photo, fit, actual pixels |
 | `Ctrl/⌘ Z`, `Ctrl/⌘ Shift Z` | undo / redo |
+| `Ctrl/⌘ ,` | appearance: light / dark / system theme, accent and axis colours |
 
 ## Layout
 

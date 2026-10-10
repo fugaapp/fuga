@@ -99,7 +99,7 @@ export function Inspector({ history, project: p, result, display, onDisplay, onO
                     ))}
                   </select>
                 ) : (
-                  <span className="num" style={{ color: 'var(--text-faint)' }}>
+                  <span className="num" style={{ color: 'var(--text-dim)' }}>
                     derived
                   </span>
                 )}
