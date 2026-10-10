@@ -1,8 +1,7 @@
 // Build the website into _site/ for GitHub Pages.
 //   node scripts/build-site.mjs
-// Copies site/ plus the brand assets, fonts, screenshot and user guide, and
-// writes release.json with the latest published release so the Download page
-// links straight to the newest installers. CI reruns this whenever a release
+// Copies site/ and writes release.json with the latest published release,
+// so the Download page links straight to the newest installers. CI reruns this whenever a release
 // is published (.github/workflows/pages.yml).
 import { cpSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -15,13 +14,6 @@ const REPO = 'fugaapp/fuga';
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
 cpSync(join(root, 'site'), out, { recursive: true });
-
-const copy = (from, to) => cpSync(join(root, from), join(out, 'assets', to), { recursive: true });
-copy('brand/fonts', 'fonts');
-copy('brand/logo/fuga-favicon.svg', 'fuga-favicon.svg');
-copy('brand/social-preview.png', 'social-preview.png');
-copy('docs/guide/shots/main-dark.png', 'screenshot.png');
-copy('docs/guide/Fuga-User-Guide.pdf', 'Fuga-User-Guide.pdf');
 
 async function latestRelease() {
   const headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'fuga-site-build' };
