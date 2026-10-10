@@ -7,7 +7,7 @@ release exists.
 ## How it fits together
 
 ```
-you: npm version 0.2.0 ──▶ git push --follow-tags
+you: bump package.json ──▶ Actions → Release → Run workflow (creates the tag)
                                    │
 GitHub Actions (build.yml): tests → builds Windows / macOS / Linux installers
                                    │
@@ -27,16 +27,19 @@ Updates…*. Offline or rate-limited, it silently does nothing.
 ## Steps
 
 1. Make sure the default branch is green (Actions tab).
-2. Bump the version — this edits `package.json`, commits and tags:
+2. Bump the version in `package.json` on `main`:
    ```bash
-   npm version patch   # 0.1.0 → 0.1.1  bug fixes
-   npm version minor   # 0.1.0 → 0.2.0  new features
-   npm version major   # 0.1.0 → 1.0.0  breaking changes (e.g. project format)
+   npm version patch --no-git-tag-version   # 0.1.0 → 0.1.1  bug fixes
+   npm version minor --no-git-tag-version   # 0.1.0 → 0.2.0  new features
+   npm version major --no-git-tag-version   # 0.1.0 → 1.0.0  breaking changes (e.g. project format)
    ```
-3. Push the commit and the tag:
-   ```bash
-   git push --follow-tags
-   ```
+   Commit and push it. (For the very first release, 0.1.0, skip this step.)
+3. On GitHub → *Actions* → **Release** → *Run workflow* (branch `main`).
+   It tags the commit with the version from `package.json` and starts the
+   *Build* workflow on that tag. It refuses if the tag already exists.
+
+   Prefer the terminal? `npm version minor` followed by
+   `git push --follow-tags` does the same; the tag push starts *Build*.
 4. Wait for the *Build* workflow (≈10 min). It refuses to run if the tag and
    `package.json` disagree.
 5. On GitHub → *Releases*, open the new **draft**, write what changed, and
