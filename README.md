@@ -3,6 +3,10 @@
   <img src="brand/logo/fuga-lockup-light.svg" alt="Fuga" height="56">
 </picture>
 
+[![Build](https://github.com/fugaapp/fuga/actions/workflows/build.yml/badge.svg)](https://github.com/fugaapp/fuga/actions/workflows/build.yml)
+[![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-1c1b19)](LICENSE)
+[![Latest release](https://img.shields.io/github/v/release/fugaapp/fuga?label=download&color=8a6800)](https://github.com/fugaapp/fuga/releases/latest)
+
 Camera calibration from a single photo, using vanishing points. You trace
 parallel edges in the photo; Fuga solves the focal length, rotation and
 position of the camera and exports a ready-to-use camera for **Blender**,
@@ -13,6 +17,8 @@ to fix the most common complaints of its users — see
 [docs/DECISIONS.md](docs/DECISIONS.md).
 
 > The name comes from *ponto de fuga*, Portuguese for vanishing point.
+
+![Fuga solving a camera from a photo of a box](docs/guide/shots/main-dark.png)
 
 **New here?** Read the illustrated [User Guide (PDF)](docs/guide/Fuga-User-Guide.pdf).
 
@@ -28,6 +34,8 @@ launch — see [docs/RELEASING.md](docs/RELEASING.md#unsigned-installers-what-us
 Requires Node 22.12 or newer.
 
 ```bash
+git clone https://github.com/fugaapp/fuga.git
+cd fuga
 npm install        # install dependencies (also downloads Electron)
 npm run dev        # open the app with hot reload
 npm test           # precision tests for the solver and exporters
