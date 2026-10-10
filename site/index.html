@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fuga — match your 3D camera to any photo</title>
+<meta name="description" content="Free, open-source app that finds the camera behind a photo from a few lines, and exports it to Blender, Maya and USD. Windows, macOS and Linux.">
+<meta property="og:title" content="Fuga — camera matching from a single photo">
+<meta property="og:description" content="Trace a few edges in a photo. Get the camera that took it, ready for Blender, Maya and USD. Free and open source.">
+<meta property="og:image" content="https://fugaapp.github.io/fuga/assets/social-preview.png">
+<meta property="og:url" content="https://fugaapp.github.io/fuga/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/fuga-favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Fuga home">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="currentColor" stroke-width="3.6" stroke-linecap="round"><line x1="4" y1="8" x2="24.94" y2="17.77"/><line x1="4" y1="30" x2="24.34" y2="24.58"/><line x1="4" y1="44" x2="25.94" y2="27.91"/></g><path d="M34 17.6L38.4 22L34 26.4L29.6 22Z" fill="none" stroke="var(--signal)" stroke-width="3.2"/></svg>
+      FUGA
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="./" aria-current="page">Home</a>
+      <a href="download.html">Download</a>
+      <a href="assets/Fuga-User-Guide.pdf">Guide</a>
+      <a class="gh" href="https://github.com/fugaapp/fuga">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <svg class="hero-art" viewBox="0 0 520 420" aria-hidden="true">
+      <line x1="0" y1="200" x2="520" y2="200" stroke="var(--faint)" stroke-dasharray="9 7"/>
+      <g stroke="var(--text)" stroke-width="4" stroke-linecap="round" opacity=".85">
+        <line x1="120" y1="40" x2="350" y2="176"/><line x1="120" y1="290" x2="346" y2="220"/><line x1="120" y1="400" x2="356" y2="236"/>
+      </g>
+      <path d="M400 178L422 200L400 222L378 200Z" fill="none" stroke="var(--signal)" stroke-width="4"/>
+    </svg>
+    <div class="wrap">
+      <p class="eyebrow">Free · Open source · Windows, macOS, Linux</p>
+      <h1>Match your 3D camera to any photo.</h1>
+      <p class="lead">Draw a few lines along the edges in your photo. Fuga works out the camera that took it — lens, angle and position — and sends it to Blender, Maya or any USD app, lined up perfectly.</p>
+      <div class="actions">
+        <a class="btn primary" href="download.html" data-download-link><span data-os-label>Download</span></a>
+        <a class="btn" href="assets/Fuga-User-Guide.pdf">Read the guide <small>PDF</small></a>
+        <span class="note"><span data-version>Free forever</span> · no account, no tracking</span>
+      </div>
+      <div class="shot"><img src="assets/screenshot.png" width="2880" height="1800" alt="The Fuga window: a photo of a box with coloured lines traced on its edges, a ground grid, and the solved camera values in the side panel."></div>
+    </div>
+  </div>
+
+  <section id="how">
+    <div class="wrap">
+      <p class="kicker"><b>01</b>How it works</p>
+      <h2>Three steps. No maths.</h2>
+      <div class="grid three" style="margin-top:32px">
+        <div class="card">
+          <svg class="ill" viewBox="0 0 300 150" aria-hidden="true"><rect x="70" y="20" width="160" height="110" rx="3" fill="none" stroke="#5F5B54" stroke-width="2"/><path d="M110 105 L150 70 L190 105" fill="none" stroke="#9A958B" stroke-width="2"/><circle cx="195" cy="48" r="9" fill="none" stroke="#9A958B" stroke-width="2"/></svg>
+          <span class="step-n">01</span>
+          <h3>Open a photo</h3>
+          <p class="muted">Drag any photo into the window — a building, a room, a street, a product on a table.</p>
+        </div>
+        <div class="card">
+          <svg class="ill" viewBox="0 0 300 150" aria-hidden="true"><line x1="0" y1="60" x2="300" y2="60" stroke="#5F5B54" stroke-dasharray="6 5"/><g stroke-width="3" stroke-linecap="round"><line x1="150" y1="30" x2="40" y2="55" stroke="#EC5F5A"/><line x1="150" y1="135" x2="40" y2="68" stroke="#EC5F5A"/><line x1="150" y1="30" x2="260" y2="55" stroke="#8CCF55"/><line x1="150" y1="135" x2="260" y2="68" stroke="#8CCF55"/></g><path d="M16 52L24 60L16 68L8 60Z" fill="none" stroke="#F5C518" stroke-width="2.4"/><path d="M284 52L292 60L284 68L276 60Z" fill="none" stroke="#F5C518" stroke-width="2.4"/></svg>
+          <span class="step-n">02</span>
+          <h3>Trace the edges</h3>
+          <p class="muted">Drag the coloured lines onto edges that are parallel in real life — the top and bottom of a wall, the sides of a road.</p>
+        </div>
+        <div class="card">
+          <svg class="ill" viewBox="0 0 300 150" aria-hidden="true"><rect x="60" y="55" width="70" height="46" rx="4" fill="none" stroke="#E9E5DC" stroke-width="2.4"/><path d="M130 70 L158 56 L158 100 L130 86 Z" fill="none" stroke="#E9E5DC" stroke-width="2.4"/><path d="M180 78 H240 M226 66 L240 78 L226 90" fill="none" stroke="#F5C518" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="step-n">03</span>
+          <h3>Export the camera</h3>
+          <p class="muted">One click. Open the file in Blender or Maya and your scene's camera sees exactly what the photo shows.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="what">
+    <div class="wrap explain">
+      <div>
+        <p class="kicker"><b>02</b>The idea</p>
+        <h2>Parallel lines meet in a photo.</h2>
+        <p class="muted">Stand between railway tracks and they seem to meet far away. That meeting spot is a <strong style="color:var(--text)">vanishing point</strong> — <em>ponto de fuga</em> in Portuguese, which is where the name comes from.</p>
+        <p class="muted">Where those points sit in a photo depends only on the camera: its lens, its angle, its height. Show Fuga a few lines and it works backwards to that camera. You never touch a formula.</p>
+      </div>
+      <svg viewBox="0 0 480 300" style="width:100%;height:auto;background:#171716;border-radius:4px" aria-label="Two railway tracks converging to a single point on the horizon">
+        <line x1="0" y1="110" x2="480" y2="110" stroke="#5F5B54" stroke-dasharray="8 6"/>
+        <g stroke="#3D3A36" stroke-width="2">
+          <line x1="160" y1="300" x2="232" y2="128"/><line x1="320" y1="300" x2="248" y2="128"/>
+          <line x1="203" y1="200" x2="277" y2="200"/><line x1="183" y1="245" x2="297" y2="245"/><line x1="216" y1="168" x2="264" y2="168"/><line x1="225" y1="146" x2="255" y2="146"/>
+        </g>
+        <g stroke="#E9E5DC" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"><line x1="232" y1="128" x2="240" y2="110"/><line x1="248" y1="128" x2="240" y2="110"/></g>
+        <path d="M240 100L250 110L240 120L230 110Z" fill="none" stroke="#F5C518" stroke-width="2.6"/>
+        <text x="258" y="104" fill="#9A958B" font-family="Plex Mono, monospace" font-size="13">vanishing point</text>
+      </svg>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <p class="kicker"><b>03</b>What you get</p>
+      <h2>Made for artists, built for precision.</h2>
+      <div class="grid three" style="margin-top:32px">
+        <div class="card"><h3>Goes straight into your app</h3><p class="muted">Blender and Maya get a ready-made camera with your photo as background. USD files open in Houdini, Cinema 4D, Unreal and more.</p></div>
+        <div class="card"><h3>As many lines as you like</h3><p class="muted">Every extra line makes the result more accurate. A meter tells you when your lines agree.</p></div>
+        <div class="card"><h3>A magnifier that helps</h3><p class="muted">Zoom right into the pixels while you drag, with your lines visible. Hold <kbd>Shift</kbd> for slow, fine moves.</p></div>
+        <div class="card"><h3>Undo everything</h3><p class="muted">Made a mess? <kbd>Ctrl</kbd> <kbd>Z</kbd>. Every change can be undone.</p></div>
+        <div class="card"><h3>Real-world scale</h3><p class="muted">Know one distance — a door, a tile — and the scene comes out in real metres.</p></div>
+        <div class="card"><h3>Light or dark</h3><p class="muted">Follows your system, or pick your own colours for the lines.</p></div>
+      </div>
+      <div class="apps" aria-label="Works with">
+        <span>Blender</span><span>Maya</span><span>Houdini</span><span>Cinema 4D</span><span>Unreal</span><span>Omniverse</span><span>Nuke (JSON)</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap explain">
+      <div>
+        <p class="kicker"><b>04</b>Privacy</p>
+        <h2>Your photos stay on your computer.</h2>
+        <p class="muted">No account. No tracking. No uploads. The only thing Fuga ever asks the internet is whether a new version is out — and you can switch that off.</p>
+        <p><a href="https://github.com/fugaapp/fuga/blob/main/PRIVACY.md">Read the privacy policy</a></p>
+      </div>
+      <div class="card">
+        <h3>Free, and staying free</h3>
+        <p class="muted">Fuga is open source under the GPL-3.0 licence: use it for anything, including paid work. Anyone can read the code and check what it does.</p>
+        <p class="muted" style="margin:0">Inspired by fSpy by Per Gantelius — thank you.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <p class="kicker"><b>05</b>Questions</p>
+      <h2>Good to know</h2>
+      <details><summary>Is it really free?</summary><p>Yes. No trial, no account, no ads. It is open source, so it will stay free.</p></details>
+      <details><summary>Do I need to understand cameras or maths?</summary><p>No. If you can see which edges in a photo are parallel in real life, you can use Fuga. The illustrated guide walks you through your first photo.</p></details>
+      <details><summary>Windows or my Mac says the app might be unsafe. Is it?</summary><p>The warning appears because Fuga isn't signed with a paid certificate — common for free apps. The <a href="download.html#first-launch">download page</a> shows how to open it the first time. The code is public, and every official installer is built automatically by GitHub from that code.</p></details>
+      <details><summary>Which Blender and Maya versions work?</summary><p>The Blender export is a plain script written for Blender 5.1 using long-stable features, with nothing to install. The Maya export works with Maya 2022 and newer.</p></details>
+      <details><summary>I used fSpy before. What's different?</summary><p>Fuga is built on the same idea and fixes what fSpy users asked for most: unlimited lines per vanishing point, undo, a better magnifier, exports beyond Blender, and an app that keeps working on new systems.</p></details>
+      <details><summary>How do I get updates?</summary><p>Fuga tells you inside the app when a new version is out. The <a href="download.html">Download</a> page always has the newest installers.</p></details>
+      <details><summary>Something doesn't work.</summary><p>Tell us on <a href="https://github.com/fugaapp/fuga/issues">GitHub Issues</a>, or from the app: <em>Help → Report a Problem</em>. A screenshot helps a lot.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Fuga · free and open source · GPL-3.0 · made by Gelain</span>
+    <nav aria-label="Footer">
+      <a href="download.html">Download</a>
+      <a href="assets/Fuga-User-Guide.pdf">User guide</a>
+      <a href="https://github.com/fugaapp/fuga">Source code</a>
+      <a href="https://github.com/fugaapp/fuga/issues">Report a problem</a>
+      <a href="https://github.com/fugaapp/fuga/blob/main/PRIVACY.md">Privacy</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/site.js" defer></script>
+</body>
+</html>

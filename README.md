@@ -24,7 +24,8 @@ to fix the most common complaints of its users — see
 
 ## Download
 
-Installers for Windows, macOS and Linux are on the
+**[fugaapp.github.io/fuga](https://fugaapp.github.io/fuga/download.html)** — picks
+the right installer for your system. All versions are also on the
 [Releases page](https://github.com/fugaapp/fuga/releases). The app tells you
 when a new version is out. Unsigned builds show a one-time warning on first
 launch — see [docs/RELEASING.md](docs/RELEASING.md#unsigned-installers-what-users-see).
@@ -45,6 +46,7 @@ npm run dist       # build an installer for your OS (into release/)
 
 Publishing a new version: [docs/RELEASING.md](docs/RELEASING.md).
 Rebuilding the user guide after editing `docs/guide/guide.html`: `npm run guide`.
+The website lives in `site/`; preview it with `npm run site` and open `_site/index.html` through any local web server.
 
 To try it without a photo of your own: `npm run sample` renders
 `samples/synthetic-box.png` (a box photographed by a **known** camera) and

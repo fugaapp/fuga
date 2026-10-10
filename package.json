@@ -41,7 +41,8 @@
     "test:watch": "vitest",
     "sample": "python3 scripts/make_sample.py",
     "dist": "npm run build && electron-builder --publish never",
-    "guide": "electron scripts/guide-pdf.cjs"
+    "guide": "electron scripts/guide-pdf.cjs",
+    "site": "node scripts/build-site.mjs"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "5.3.0",

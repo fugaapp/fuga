@@ -16,7 +16,8 @@ GitHub Actions (build.yml): tests → builds Windows / macOS / Linux installers
 you: review the draft, write notes, click "Publish release"
                                    │
 every installed Fuga: "Fuga 0.2.0 available" pill in the top bar
-                      → opens the release page to download
+                      → opens fugaapp.github.io/fuga/download.html
+the website rebuilds itself, so its Download page lists the new installers
 ```
 
 The app only *tells* the user; it never downloads or runs anything by itself.
@@ -39,8 +40,16 @@ Updates…*. Offline or rate-limited, it silently does nothing.
 4. Wait for the *Build* workflow (≈10 min). It refuses to run if the tag and
    `package.json` disagree.
 5. On GitHub → *Releases*, open the new **draft**, write what changed, and
-   click **Publish release**. Only published releases trigger the update
+   click **Publish release**. Publishing also rebuilds the website
+   (`.github/workflows/pages.yml`), so the Download page updates by itself. Only published releases trigger the update
    notice; drafts and pre-releases never do, so you can test safely.
+
+## The website
+
+`site/` is published to https://fugaapp.github.io/fuga/ by
+`.github/workflows/pages.yml`. One-time setup: *Settings → Pages → Build and
+deployment → Source: **GitHub Actions***. After that it redeploys on every
+change to `site/`, `brand/` or the guide, and on every published release.
 
 ## Test builds without releasing
 
