@@ -45,6 +45,7 @@ npm run dist       # build an installer for your OS (into release/)
 ```
 
 Publishing a new version: [docs/RELEASING.md](docs/RELEASING.md).
+Announcement texts for launch: [docs/launch/LAUNCH.md](docs/launch/LAUNCH.md).
 Rebuilding the user guide after editing `docs/guide/guide.html`: `npm run guide`.
 The website lives in `site/`; preview it with `npm run site` and open `_site/index.html` through any local web server.
 
