@@ -2,7 +2,8 @@ import { app, BrowserWindow, dialog, ipcMain, Menu, nativeTheme, type MenuItemCo
 import { readFile, stat, writeFile } from 'node:fs/promises';
 import { basename, dirname, extname, isAbsolute, join, parse, relative, resolve, sep } from 'node:path';
 import { Channels, IMAGE_EXTENSIONS, type MenuCommand, type OpenedImage } from '../shared/ipc';
-import { GITHUB_REPO } from '../shared/release';
+import { MADE_WITH_AI } from '../shared/about';
+import { DOWNLOAD_PAGE, GITHUB_REPO } from '../shared/release';
 import { loadPreferences, savePreferences } from './preferences';
 import { hardenBeforeReady, hardenSession, openHttps, trustedSender } from './security';
 import { checkForUpdate } from './updates';
@@ -165,6 +166,23 @@ function registerIpc(): void {
   });
 }
 
+async function showAbout(): Promise<void> {
+  const { response } = await dialog.showMessageBox(window!, {
+    type: 'info',
+    title: 'About Fuga',
+    message: `Fuga ${app.getVersion()}`,
+    detail:
+      'Camera matching from a single photo. Free and open source (GPL-3.0-or-later).\n\n' +
+      `${MADE_WITH_AI}\n\n` +
+      'Inspired by fSpy by Per Gantelius.',
+    buttons: ['OK', 'Website', 'Source code'],
+    defaultId: 0,
+    cancelId: 0,
+  });
+  if (response === 1) openHttps(DOWNLOAD_PAGE.replace(/download\.html$/, ''));
+  if (response === 2) openHttps(`https://github.com/${GITHUB_REPO}`);
+}
+
 function buildMenu(): void {
   const send = (command: MenuCommand) => () => window?.webContents.send(Channels.menu, command);
   const isMac = process.platform === 'darwin';
@@ -219,6 +237,8 @@ function buildMenu(): void {
         { label: 'Release Notes', click: () => openHttps(`https://github.com/${GITHUB_REPO}/releases`) },
         { label: 'Privacy', click: () => openHttps(`https://github.com/${GITHUB_REPO}/blob/HEAD/PRIVACY.md`) },
         { label: 'Report a Problem', click: () => openHttps(`https://github.com/${GITHUB_REPO}/issues`) },
+        { type: 'separator' },
+        { label: 'About Fuga', click: () => void showAbout() },
       ],
     },
   ];

@@ -23,10 +23,11 @@ Links used below:
 - [ ] Stay around for the first two hours to answer comments. That matters
       more than the text.
 
-A note on honesty: if people ask how it was made, say it plainly. Something
-like "I'm a motion designer still learning to code, and I built it with a lot
-of help from AI (Claude)" lands better than having someone dig it up later.
-The optional lines marked *(optional)* below do this up front.
+Every post says up front that Fuga was built with AI help (Claude). That's
+a project decision, not a footnote: the app, the website, the README and
+the guide all say the same. If people ask for details, the honest short
+version is: "I designed it and decided everything it does; the AI wrote most
+of the code; tests check the math against cameras with known values." 
 
 ---
 
@@ -64,8 +65,8 @@ The optional lines marked *(optional)* below do this up front.
 >
 > Download: https://fugaapp.github.io/fuga
 >
-> *(optional)* I'm a designer still learning to program, and I built this
-> with a lot of help from Claude. The math is checked by tests against
+> Full transparency: I'm a designer still learning to program, and I built
+> this with a lot of help from AI (Claude). The math is checked by tests against
 > cameras with known values, but real photos are the real test, so bug
 > reports are very welcome.
 >
@@ -92,7 +93,9 @@ The optional lines marked *(optional)* below do this up front.
 > Python script (film back, film offset, image plane). USD gets a Y-up
 > `.usda` camera. JSON has the K matrix and both Z-up and Y-up transforms.
 >
-> Free, GPL-3.0, Windows/macOS/Linux, no telemetry.
+> Free, GPL-3.0, Windows/macOS/Linux, no telemetry. I'm a motion designer,
+> not a developer: I designed it and wrote it with heavy help from AI
+> (Claude), and the solver is covered by tests against known cameras.
 >
 > https://fugaapp.github.io/fuga
 >
@@ -139,6 +142,11 @@ thread, where many fSpy users still are).
 > There's an illustrated PDF guide on the website.
 >
 > https://fugaapp.github.io/fuga
+>
+> One thing I want to be upfront about: I'm a motion designer, not a
+> programmer. I designed Fuga and made every decision about how it works and
+> looks, and I wrote it with a lot of help from AI (Claude). The math is
+> checked by automated tests and the code is public, so anyone can look.
 >
 > Huge thanks to Per Gantelius for fSpy. Fuga wouldn't exist without it.
 >
@@ -206,6 +214,10 @@ thread, where many fSpy users still are).
 > and light and dark themes. It runs on Windows, macOS and Linux and collects
 > no data.
 >
+> In the interest of transparency: I designed Fuga and built it with the
+> help of AI (Claude). Every result is checked by automated tests and the
+> source is public.
+>
 > Website and download: https://fugaapp.github.io/fuga
 > Source (GPL-3.0): https://github.com/fugaapp/fuga
 > A short demo: [GIF or video link]
@@ -234,7 +246,8 @@ List Fuga as an alternative to **fSpy**.
 > USD. It supports one, two or three vanishing points, unlimited lines per
 > point, real-world scale from a known distance, undo and a pixel magnifier.
 > Free and open source (GPL-3.0), for Windows, macOS and Linux, with no
-> account and no tracking.
+> account and no tracking. Designed by a motion designer and built with AI
+> assistance (Claude); the math is covered by automated tests.
 
 **Tags:** camera matching, camera calibration, vanishing points, Blender,
 Maya, USD, photogrammetry, 3D
@@ -244,7 +257,8 @@ Maya, USD, photogrammetry, 3D
 ## Short posts (X, Bluesky, Mastodon, Threads)
 
 > Made a free camera-matching app for 3D artists. Drag lines on a photo, get
-> the camera, drop it into Blender or Maya. Open source, works on Win/Mac/Linux.
+> the camera, drop it into Blender or Maya. Open source, Win/Mac/Linux, built
+> with AI help (Claude).
 > https://fugaapp.github.io/fuga
 > [GIF]
 
@@ -259,6 +273,8 @@ Maya, USD, photogrammetry, 3D
 > Fuga matches a 3D camera to any photo. Trace a few edges, export, and your
 > render lines up with the picture. It's free and open source, for Blender,
 > Maya and anything that reads USD.
+>
+> Designed by me, built with AI help (Claude), tested against the math.
 >
 > Link in bio · fugaapp.github.io/fuga
 >
@@ -300,6 +316,7 @@ Maya, USD, photogrammetry, 3D
 > descobre a lente e o ângulo, e o teu render bate certo com a foto. Funciona
 > com Blender, Maya e tudo o que leia USD.
 >
-> Open source, sem conta e sem anúncios. Link na bio.
+> Open source, sem conta e sem anúncios. Desenhei-a eu e construí-a com a
+> ajuda de IA (Claude), com testes a confirmar cada cálculo. Link na bio.
 >
 > #blender3d #motiondesign #3dbrasil #3dportugal #vfx #opensource

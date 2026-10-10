@@ -466,6 +466,12 @@ input[type='range'] {
   font-size: var(--text-sm);
 }
 
+.empty-card .credit {
+  margin-top: 18px;
+  color: var(--text-dim);
+  font-size: var(--text-xs);
+}
+
 .viewport[data-dragover='true']::after {
   content: '';
   position: absolute;

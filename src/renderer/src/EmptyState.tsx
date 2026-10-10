@@ -1,3 +1,4 @@
+import { MADE_WITH_AI_SHORT } from '../../shared/about';
 import { Mark } from './Mark';
 
 export function EmptyState({ onOpen, shortcut }: { onOpen: () => void; shortcut: string }) {
@@ -14,6 +15,7 @@ export function EmptyState({ onOpen, shortcut }: { onOpen: () => void; shortcut:
         <button type="button" className="btn" onClick={onOpen}>
           Open photo…
         </button>
+        <p className="credit">{MADE_WITH_AI_SHORT} Help → About Fuga</p>
       </div>
     </div>
   );
