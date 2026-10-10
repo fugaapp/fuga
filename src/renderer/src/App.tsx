@@ -132,7 +132,7 @@ export function App() {
   const checkUpdates = useCallback(
     (manual: boolean) =>
       run(async () => {
-        const found = await api.checkForUpdate();
+        const found = await api.checkForUpdate(!manual);
         setUpdate(found);
         if (manual && !found) flash(`Fuga ${api.version} is the latest version.`);
       }),

@@ -112,6 +112,14 @@ More in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). What comes next is in
 - Noise test: with imprecise clicks (σ = 0.7 px), 10 lines per vanishing
   point give a clearly smaller focal-length error than 2 lines.
 
+## Privacy and security
+
+Fuga collects **no data at all** — no analytics, no telemetry. The only
+network request is an optional check for new versions on GitHub; everything
+else is blocked in code. Details in [PRIVACY.md](PRIVACY.md); how the app and
+the project are hardened, and how to report a vulnerability, in
+[SECURITY.md](SECURITY.md).
+
 ## License
 
 Copyright © 2026 Gelain.

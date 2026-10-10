@@ -37,8 +37,11 @@ export interface FugaApi {
   exportFile(content: string, defaultName: string, extension: string): Promise<string | null>;
   /** Absolute path of a dropped file (Electron's webUtils). */
   pathForFile(file: File): string;
-  /** Latest release on GitHub if newer than this build, else null. */
-  checkForUpdate(): Promise<UpdateInfo | null>;
+  /**
+   * Latest release on GitHub if newer than this build, else null.
+   * `auto` checks respect the user's "Check for Updates Automatically" switch.
+   */
+  checkForUpdate(auto: boolean): Promise<UpdateInfo | null>;
   /** Make native menus/dialogs follow the app theme. */
   setTheme(theme: 'system' | 'dark' | 'light'): void;
   /** Open an https URL in the default browser. */
