@@ -19,7 +19,7 @@ to fix the most common complaints of its users — see
 ## Download
 
 Installers for Windows, macOS and Linux are on the
-[Releases page](https://github.com/fuga-app/fuga/releases). The app tells you
+[Releases page](https://github.com/fugaapp/fuga/releases). The app tells you
 when a new version is out. Unsigned builds show a one-time warning on first
 launch — see [docs/RELEASING.md](docs/RELEASING.md#unsigned-installers-what-users-see).
 

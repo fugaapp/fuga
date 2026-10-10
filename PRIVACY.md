@@ -11,7 +11,7 @@ one, described below. Anyone can verify this — the source is public.
 ## The one network request
 
 To tell you when a new version exists, Fuga asks GitHub's public API
-(`api.github.com/repos/fuga-app/fuga/releases/latest`) a few seconds after launch
+(`api.github.com/repos/fugaapp/fuga/releases/latest`) a few seconds after launch
 and when you choose *Help → Check for Updates…*.
 
 - What is sent: a standard HTTPS request with `User-Agent: Fuga/<version>`.
@@ -41,11 +41,11 @@ notifications and similar requests are refused automatically.
 ## Downloads
 
 Installers come only from this repository's
-[Releases page](https://github.com/fuga-app/fuga/releases), built by GitHub
+[Releases page](https://github.com/fugaapp/fuga/releases), built by GitHub
 Actions from the public source. Each release carries a signed
 [build provenance attestation](https://docs.github.com/actions/security-for-github-actions/using-artifact-attestations)
 proving which commit and workflow produced it:
 
 ```bash
-gh attestation verify Fuga-0.2.0-win-x64.exe --repo fuga-app/fuga
+gh attestation verify Fuga-0.2.0-win-x64.exe --repo fugaapp/fuga
 ```
